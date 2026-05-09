@@ -19,3 +19,13 @@
 2026-05-09T01:19:25Z INF ICMP proxy will use ::1 in zone Loopback Pseudo-Interface 1 as source for IPv6
 2026-05-09T01:19:25Z INF Starting metrics server on 127.0.0.1:20241/metrics
 2026-05-09T01:19:25Z INF Registered tunnel connection connIndex=0 connection=9fefc698-312d-400b-aa86-f9820a696818 event=0 ip=198.41.192.67 location=gig11 protocol=quic
+2026-05-09T02:50:25Z ERR failed to run the datagram handler error="timeout: no recent network activity" connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:25Z ERR failed to accept incoming stream requests error="failed to accept QUIC stream: timeout: no recent network activity" connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:25Z ERR failed to serve tunnel connection error="datagram manager encountered a failure while serving" connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:25Z ERR Serve tunnel error error="datagram manager encountered a failure while serving" connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:25Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveP256] connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:30Z ERR Failed to dial a quic connection error="failed to dial to edge with quic: timeout: no recent network activity" connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:30Z INF Retrying connection in up to 4s connIndex=0 event=0 ip=198.41.192.67
+2026-05-09T02:50:32Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveP256] connIndex=0 event=0 ip=198.41.200.193
+2026-05-09T02:50:32Z INF Registered tunnel connection connIndex=0 connection=db4da22d-fd40-438b-9fe8-fd85fdf248b4 event=0 ip=198.41.200.193 location=gig09 protocol=quic

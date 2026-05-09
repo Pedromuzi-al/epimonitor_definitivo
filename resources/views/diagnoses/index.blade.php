@@ -71,13 +71,20 @@
                                     @endswitch
                                 </td>
                                 <td class="text-end">
-                                    <a href="{{ route('diagnoses.show', $diagnosis) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('diagnoses.show', $diagnosis) }}" class="btn btn-sm btn-info" title="Visualizar diagnóstico">
                                         <i class="fas fa-eye"></i> Ver
                                     </a>
+                                    <button 
+                                        class="btn btn-sm btn-success"
+                                        data-resolve-diagnosis="{{ $diagnosis->id }}"
+                                        data-resolve-url="{{ route('diagnoses.resolve', $diagnosis) }}"
+                                        title="Marcar como resolvido">
+                                        <i class="fas fa-check"></i> Resolver
+                                    </button>
                                     <form action="{{ route('diagnoses.destroy', $diagnosis) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')" title="Deletar diagnóstico">
                                             <i class="fas fa-trash"></i> Deletar
                                         </button>
                                     </form>

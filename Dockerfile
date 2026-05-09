@@ -13,4 +13,3 @@ RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 10000
 CMD ["sh", "-lc", "php artisan migrate --force && (php artisan db:seed --class=DiseaseSeeder --force || true) && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"]
-

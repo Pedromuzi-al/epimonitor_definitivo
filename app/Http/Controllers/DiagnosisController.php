@@ -128,4 +128,23 @@ class DiagnosisController extends Controller
         $diagnosis->delete();
         return redirect()->route('diagnoses.index')->with('success', 'Diagnóstico deletado com sucesso!');
     }
+
+    /**
+     * Marcar diagnóstico como resolvido
+     *
+     * @param  Diagnosis  $diagnosis
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resolve(Diagnosis $diagnosis, Request $request)
+    {
+        $validated = $request->validate([
+            'resolution_reason' => 'nullable|string|max:255',
+        ]);
+
+        $diagnosis->markAsResolved($validated['resolution_reason'] ?? null);
+
+        return redirect()->route('diagnoses.index')
+            ->with('success', 'Diagnóstico marcado como resolvido e removido do banco ativo!');
+    }
 }

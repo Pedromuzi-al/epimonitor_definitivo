@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Diagnosis extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'person_id',
@@ -16,10 +17,15 @@ class Diagnosis extends Model
         'symptoms',
         'neighborhood',
         'alert_level',
+        'is_resolved',
+        'resolved_at',
+        'resolution_reason',
     ];
 
     protected $casts = [
         'symptoms' => 'array',
+        'is_resolved' => 'boolean',
+        'resolved_at' => 'datetime',
     ];
 
     public function person()
@@ -35,5 +41,41 @@ class Diagnosis extends Model
     public function symptomRecords()
     {
         return $this->hasMany(SymptomRecord::class);
+    }
+
+    /**
+     * Marcar diagnóstico como resolvido
+     */
+    public function markAsResolved(string $reason = null): void
+    {
+        $this->update([
+            'is_resolved' => true,
+            'resolved_at' => now(),
+            'resolution_reason' => $reason,
+        ]);
+    }
+
+    /**
+     * Verificar se está resolvido
+     */
+    public function isResolved(): bool
+    {
+        return $this->is_resolved === true;
+    }
+
+    /**
+     * Obter apenas diagnósticos não resolvidos
+     */
+    public function scopeUnresolved($query)
+    {
+        return $query->where('is_resolved', false);
+    }
+
+    /**
+     * Obter apenas diagnósticos resolvidos
+     */
+    public function scopeResolved($query)
+    {
+        return $query->where('is_resolved', true);
     }
 }

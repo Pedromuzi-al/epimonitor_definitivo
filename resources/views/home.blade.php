@@ -64,6 +64,7 @@
                                         <th>Doença</th>
                                         <th>Probabilidade</th>
                                         <th>Bairro</th>
+                                        <th style="width: 120px;">Ação</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,6 +74,16 @@
                                             <td>{{ optional($diagnosis->disease)->name ?? 'N/A' }}</td>
                                             <td>{{ number_format($diagnosis->probability, 2, ',', '.') }}%</td>
                                             <td>{{ $diagnosis->neighborhood }}</td>
+                                            <td>
+                                                <button 
+                                                    class="btn btn-sm btn-outline-success"
+                                                    data-resolve-diagnosis="{{ $diagnosis->id }}"
+                                                    data-resolve-url="{{ route('diagnoses.resolve', $diagnosis) }}"
+                                                    data-bs-toggle="tooltip"
+                                                    title="Marcar como resolvido">
+                                                    <i class="fas fa-check"></i> Resolver
+                                                </button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

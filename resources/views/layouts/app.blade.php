@@ -193,6 +193,62 @@
             margin-top: 3rem;
         }
 
+        /* Notification Bell Badge Animation */
+        @keyframes pulse-badge {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+
+        #notificationBell {
+            position: relative;
+            border: none;
+            background: none !important;
+            padding: 0.5rem 0.75rem !important;
+            transition: opacity 0.25s ease;
+            color: rgba(255,255,255,0.8) !important;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+        }
+
+        #notificationBell:hover {
+            opacity: 0.8;
+            color: #fff !important;
+        }
+
+        #notificationBell .badge {
+            animation: pulse-badge 2s infinite;
+            cursor: pointer;
+            min-width: 22px;
+            min-height: 22px;
+            padding: 2px 6px !important;
+            font-size: 0.7rem;
+        }
+
+        .dropdown-menu {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            border: none;
+        }
+
+        .dropdown-item {
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
         /* Alerts */
         .alert {
             border-radius: 5px;
@@ -266,6 +322,9 @@
                             <i class="fas fa-chart-bar"></i> Estatisticas
                         </a>
                     </li>
+                    <li class="nav-item dropdown">
+                        @include('components.notification-bell')
+                    </li>
                 </ul>
             </div>
         </div>
@@ -301,25 +360,16 @@
                 </div>
             @endif
 
-            
-            @if(isset($medicalAlerts) && $medicalAlerts->count() > 0)
-                <div class="alert alert-warning border-0 shadow-sm" role="alert">
-                    <h5 class="alert-heading mb-2"><i class="fas fa-bell"></i> Notificacao Medica Urgente</h5>
-                    <p class="mb-2">Foram detectados bairros com alerta alto/critico. Recomendado acionamento rapido das equipes medicas:</p>
-                    <ul class="mb-0">
-                        @foreach($medicalAlerts as $alert)
-                            <li>
-                                <strong>{{ $alert['neighborhood'] }}</strong> - {{ $alert['total'] }} ocorrencias -
-                                {{ $alert['level'] === 'critical' ? 'CRITICO' : 'ALTO' }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
             <!-- Page Content -->
             @yield('content')
         </div>
     </main>
+
+    <!-- Notifications Modal -->
+    @include('components.notification-modal')
+
+    <!-- Resolve Diagnosis Modal -->
+    @include('components.resolve-diagnosis-modal')
 
     <!-- Footer -->
     <footer>

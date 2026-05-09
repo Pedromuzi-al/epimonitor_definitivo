@@ -29,5 +29,8 @@ Route::resource('people', PersonController::class);
 // Diagnosis routes
 Route::resource('diagnoses', DiagnosisController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 
+// Resolve diagnosis route
+Route::post('/diagnoses/{diagnosis}/resolve', [DiagnosisController::class, 'resolve'])->name('diagnoses.resolve');
+
 // Statistics
 Route::get('/statistics', [StatisticsController::class, 'dashboard'])->name('statistics.dashboard');

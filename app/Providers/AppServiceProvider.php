@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Diagnosis;
 use App\Rules\ValidCPF;
+use App\Services\MedicalAlertService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -25,19 +25,10 @@ class AppServiceProvider extends ServiceProvider
             return $rule->passes($attribute, $value);
         }, 'CPF invalido.');
 
+        // Registrar Medical Alert Service no View Composer
         View::composer('*', function ($view) {
-            $medicalAlerts = Diagnosis::selectRaw('neighborhood, count(*) as total')
-                ->groupBy('neighborhood')
-                ->havingRaw('count(*) >= 20')
-                ->orderByRaw('count(*) desc')
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'neighborhood' => $item->neighborhood,
-                        'total' => (int) $item->total,
-                        'level' => ((int) $item->total >= 30) ? 'critical' : 'high',
-                    ];
-                });
+            $medicalAlertService = app(MedicalAlertService::class);
+            $medicalAlerts = $medicalAlertService->getActiveMedicalAlerts();
 
             $view->with('medicalAlerts', $medicalAlerts);
         });

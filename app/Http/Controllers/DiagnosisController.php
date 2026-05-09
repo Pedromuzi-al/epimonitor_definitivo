@@ -21,11 +21,31 @@ class DiagnosisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $name = trim((string) $request->input('name', ''));
+        $neighborhood = trim((string) $request->input('neighborhood', ''));
+        $cpf = preg_replace('/\D/', '', (string) $request->input('cpf', ''));
+
         $diagnoses = Diagnosis::with(['person', 'disease'])
+            ->unresolved()
+            ->when($name !== '', function ($query) use ($name) {
+                $query->whereHas('person', function ($personQuery) use ($name) {
+                    $personQuery->where('name', 'like', '%' . $name . '%');
+                });
+            })
+            ->when($neighborhood !== '', function ($query) use ($neighborhood) {
+                $query->where('neighborhood', 'like', '%' . $neighborhood . '%');
+            })
+            ->when($cpf !== '', function ($query) use ($cpf) {
+                $query->whereHas('person', function ($personQuery) use ($cpf) {
+                    $personQuery->where('cpf', 'like', '%' . $cpf . '%');
+                });
+            })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
+
         return view('diagnoses.index', compact('diagnoses'));
     }
 

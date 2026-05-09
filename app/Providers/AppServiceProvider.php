@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Rules\ValidCPF;
 use App\Services\MedicalAlertService;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -19,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Paginator::useBootstrap();
 
         Validator::extend('cpf', function ($attribute, $value) {
             $rule = new ValidCPF();

@@ -16,6 +16,33 @@
         </div>
     </div>
 
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ route('diagnoses.index') }}">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="name" class="form-label">Nome</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ request('name') }}" placeholder="Ex.: Maria Silva">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="neighborhood" class="form-label">Bairro</label>
+                        <input type="text" id="neighborhood" name="neighborhood" class="form-control" value="{{ request('neighborhood') }}" placeholder="Ex.: Centro">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" id="cpf" name="cpf" class="form-control" value="{{ request('cpf') }}" placeholder="000.000.000-00">
+                    </div>
+                    <div class="col-md-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-filter"></i> Filtrar
+                        </button>
+                        <a href="{{ route('diagnoses.index') }}" class="btn btn-outline-secondary">Limpar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     @if($diagnoses->count() > 0)
         <div class="card">
             <div class="table-responsive">

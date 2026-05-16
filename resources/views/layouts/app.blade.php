@@ -325,6 +325,41 @@
                     <li class="nav-item dropdown">
                         @include('components.notification-bell')
                     </li>
+                    @auth
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            @if(!empty(Auth::user()->profile_photo_path))
+                                <img src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="Foto de perfil" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; margin-right: 6px; border: 1px solid rgba(255,255,255,.6);">
+                            @else
+                                <i class="fas fa-user-circle"></i>
+                            @endif
+                            {{ Auth::user()->name }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ route('user.profile') }}"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('auth.logout') }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item" style="cursor: pointer; border: none; background: none;">
+                                        <i class="fas fa-sign-out-alt"></i> Sair
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('auth.login') }}">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('auth.register') }}">
+                            <i class="fas fa-user-plus"></i> Registrar
+                        </a>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>

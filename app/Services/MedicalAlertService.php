@@ -24,7 +24,9 @@ class MedicalAlertService
      */
     public function getActiveMedicalAlerts(): Collection
     {
-        return Diagnosis::selectRaw('neighborhood, count(*) as total')
+        return Diagnosis::query()
+            ->unresolved()
+            ->selectRaw('neighborhood, count(*) as total')
             ->groupBy('neighborhood')
             ->havingRaw('count(*) >= ' . self::ALERT_THRESHOLD)
             ->orderByRaw('count(*) desc')
@@ -59,10 +61,12 @@ class MedicalAlertService
      */
     public function hasActiveAlerts(): bool
     {
-        return Diagnosis::selectRaw('count(*) as total')
-            ->where('alert_level', '!=', 'low')
-            ->first()
-            ->total > 0;
+        return Diagnosis::query()
+            ->unresolved()
+            ->selectRaw('neighborhood, count(*) as total')
+            ->groupBy('neighborhood')
+            ->havingRaw('count(*) >= ' . self::ALERT_THRESHOLD)
+            ->exists();
     }
 
     /**

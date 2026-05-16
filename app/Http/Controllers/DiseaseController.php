@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class DiseaseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Exibe a listagem do recurso.
      *
      * @return \Illuminate\Http\Response
      */
@@ -17,7 +17,7 @@ class DiseaseController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Exibe o formulario para criar um novo recurso.
      *
      * @return \Illuminate\Http\Response
      */
@@ -27,7 +27,7 @@ class DiseaseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Armazena um novo recurso.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -38,7 +38,7 @@ class DiseaseController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Exibe o recurso especificado.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -49,7 +49,7 @@ class DiseaseController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Exibe o formulario para editar o recurso especificado.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -60,7 +60,7 @@ class DiseaseController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza o recurso especificado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -72,7 +72,7 @@ class DiseaseController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove o recurso especificado.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

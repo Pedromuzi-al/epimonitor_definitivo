@@ -9,64 +9,64 @@ use App\Models\Person;
 class DiagnosisService
 {
     /**
-     * Calculate diagnosis based on symptoms
+     * Calcula diagnosticos com base nos sintomas.
      */
     public function calculateDiagnosis(Person $person, array $symptoms)
     {
-        $diseases = Disease::all();
-        $diagnoses = [];
+        $doencas = Disease::all();
+        $diagnosticos = [];
 
-        foreach ($diseases as $disease) {
-            $score = $this->calculateScore($disease, $symptoms);
-            $diagnoses[$disease->id] = [
-                'disease' => $disease,
-                'score' => $score,
-                'probability' => $this->calculateProbability($disease, $score),
+        foreach ($doencas as $doenca) {
+            $pontuacao = $this->calculateScore($doenca, $symptoms);
+            $diagnosticos[$doenca->id] = [
+                'disease' => $doenca,
+                'score' => $pontuacao,
+                'probability' => $this->calculateProbability($doenca, $pontuacao),
             ];
         }
 
-        // Sort by probability descending
-        usort($diagnoses, function ($a, $b) {
+        // Ordena por probabilidade decrescente.
+        usort($diagnosticos, function ($a, $b) {
             return $b['probability'] <=> $a['probability'];
         });
 
-        return $diagnoses;
+        return $diagnosticos;
     }
 
     /**
-     * Calculate score for a disease based on symptoms
+     * Calcula pontuacao para uma doenca com base nos sintomas.
      */
     private function calculateScore(Disease $disease, array $symptoms): float
     {
-        $weights = $this->normalizeWeights($disease->symptom_weights ?? []);
-        $totalScore = 0;
+        $pesos = $this->normalizeWeights($disease->symptom_weights ?? []);
+        $pontuacaoTotal = 0;
 
         foreach ($symptoms as $symptom) {
-            if (isset($weights[$symptom])) {
-                $totalScore += $weights[$symptom];
+            if (isset($pesos[$symptom])) {
+                $pontuacaoTotal += $pesos[$symptom];
             }
         }
 
-        return $totalScore;
+        return $pontuacaoTotal;
     }
 
     /**
-     * Calculate probability as percentage
+     * Calcula probabilidade em percentual.
      */
     private function calculateProbability(Disease $disease, float $score): float
     {
-        $weights = $this->normalizeWeights($disease->symptom_weights ?? []);
-        $maxScore = array_sum($weights);
+        $pesos = $this->normalizeWeights($disease->symptom_weights ?? []);
+        $pontuacaoMaxima = array_sum($pesos);
 
-        if ($maxScore == 0) {
+        if ($pontuacaoMaxima == 0) {
             return 0;
         }
 
-        return ($score / $maxScore) * 100;
+        return ($score / $pontuacaoMaxima) * 100;
     }
 
     /**
-     * Ensure symptom weights are always an array
+     * Garante que os pesos dos sintomas sejam sempre um array.
      *
      * @param mixed $weights
      * @return array<string, float|int>
@@ -78,9 +78,9 @@ class DiagnosisService
         }
 
         if (is_string($weights) && $weights !== '') {
-            $decoded = json_decode($weights, true);
-            if (is_array($decoded)) {
-                return $decoded;
+            $decodificado = json_decode($weights, true);
+            if (is_array($decodificado)) {
+                return $decodificado;
             }
         }
 
@@ -88,18 +88,18 @@ class DiagnosisService
     }
 
     /**
-     * Get alert level based on neighborhood symptom count
+     * Retorna o nivel de alerta com base no total de sintomas por bairro.
      */
     public function getAlertLevel(string $neighborhood): string
     {
-        $symptomCount = Diagnosis::where('neighborhood', $neighborhood)
+        $quantidadeSintomas = Diagnosis::where('neighborhood', $neighborhood)
             ->count();
 
-        if ($symptomCount >= 30) {
+        if ($quantidadeSintomas >= 30) {
             return 'critical';
-        } elseif ($symptomCount >= 20) {
+        } elseif ($quantidadeSintomas >= 20) {
             return 'high';
-        } elseif ($symptomCount >= 10) {
+        } elseif ($quantidadeSintomas >= 10) {
             return 'moderate';
         }
 
@@ -107,7 +107,7 @@ class DiagnosisService
     }
 
     /**
-     * Get disease statistics
+     * Retorna estatisticas por doenca.
      */
     public function getDiseaseStatistics()
     {
@@ -120,7 +120,7 @@ class DiagnosisService
     }
 
     /**
-     * Get neighborhood statistics
+     * Retorna estatisticas por bairro.
      */
     public function getNeighborhoodStatistics()
     {

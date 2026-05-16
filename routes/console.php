@@ -5,15 +5,14 @@ use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
-| Console Routes
+| Rotas de Console
 |--------------------------------------------------------------------------
 |
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
+| Neste arquivo voce pode definir comandos de console baseados em
+| Closure. Cada Closure e associada a uma instancia de comando.
 |
 */
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+})->purpose('Exibe uma frase inspiradora');

@@ -38,14 +38,14 @@ class PersonController extends Controller
 
     public function index()
     {
-        $people = Person::withCount('diagnoses')->latest()->paginate(15);
-        return view('people.index', compact('people'));
+        $pessoas = Person::withCount('diagnoses')->latest()->paginate(15);
+        return view('people.index', ['people' => $pessoas]);
     }
 
     public function create()
     {
-        $neighborhoods = self::CARATINGA_NEIGHBORHOODS;
-        return view('people.create', compact('neighborhoods'));
+        $bairros = self::CARATINGA_NEIGHBORHOODS;
+        return view('people.create', ['neighborhoods' => $bairros]);
     }
 
     public function store(Request $request)
@@ -57,7 +57,7 @@ class PersonController extends Controller
             'state' => strtoupper((string) $request->state),
         ]);
 
-        $validated = $request->validate([
+        $dadosValidados = $request->validate([
             'name' => 'required|string|max:255',
             'cpf' => 'required|cpf|unique:people',
             'age' => 'required|integer|min:0|max:150',
@@ -80,9 +80,9 @@ class PersonController extends Controller
             'house_number.required' => 'O número é obrigatório.',
         ]);
 
-        $validated['neighborhood'] = implode(', ', $validated['neighborhood']);
+        $dadosValidados['neighborhood'] = implode(', ', $dadosValidados['neighborhood']);
 
-        Person::create($validated);
+        Person::create($dadosValidados);
         return redirect()->route('people.index')->with('success', 'Pessoa cadastrada com sucesso!');
     }
 
@@ -94,10 +94,14 @@ class PersonController extends Controller
 
     public function edit(Person $person)
     {
-        $neighborhoods = self::CARATINGA_NEIGHBORHOODS;
-        $selectedNeighborhoods = array_map('trim', explode(',', (string) $person->neighborhood));
+        $bairros = self::CARATINGA_NEIGHBORHOODS;
+        $bairrosSelecionados = array_map('trim', explode(',', (string) $person->neighborhood));
 
-        return view('people.edit', compact('person', 'neighborhoods', 'selectedNeighborhoods'));
+        return view('people.edit', [
+            'person' => $person,
+            'neighborhoods' => $bairros,
+            'selectedNeighborhoods' => $bairrosSelecionados,
+        ]);
     }
 
     public function update(Request $request, Person $person)
@@ -108,7 +112,7 @@ class PersonController extends Controller
             'state' => strtoupper((string) $request->state),
         ]);
 
-        $validated = $request->validate([
+        $dadosValidados = $request->validate([
             'name' => 'required|string|max:255',
             'age' => 'required|integer|min:0|max:150',
             'phone' => 'required|string|min:10|max:11',
@@ -129,9 +133,9 @@ class PersonController extends Controller
             'house_number.required' => 'O número é obrigatório.',
         ]);
 
-        $validated['neighborhood'] = implode(', ', $validated['neighborhood']);
+        $dadosValidados['neighborhood'] = implode(', ', $dadosValidados['neighborhood']);
 
-        $person->update($validated);
+        $person->update($dadosValidados);
         return redirect()->route('people.show', $person)->with('success', 'Pessoa atualizada com sucesso!');
     }
 

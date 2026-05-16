@@ -7,7 +7,7 @@
         <i class="fas fa-chart-bar"></i> Estatísticas e Alertas
     </h1>
 
-    <!-- Quick Stats -->
+    <!-- Resumo rapido -->
     <div class="row mb-4">
         <div class="col-md-3 mb-4">
             <div class="stat-card">
@@ -36,7 +36,7 @@
     </div>
 
     <div class="row">
-        <!-- Disease Rankings Chart -->
+        <!-- Grafico de ranking de doencas -->
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="card-header">
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <!-- Neighborhood Stats Chart -->
+        <!-- Grafico de estatisticas por bairro -->
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="card-header">
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <!-- Disease Ranking Table -->
+    <!-- Tabela de ranking de doencas -->
     <div class="row">
         <div class="col-lg-6 mb-4">
             <div class="card">
@@ -115,7 +115,7 @@
             </div>
         </div>
 
-        <!-- Neighborhood Stats Table -->
+        <!-- Tabela de estatisticas por bairro -->
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="card-header">
@@ -179,7 +179,7 @@
 
 @section('js')
     <script>
-        // Disease Chart
+        // Grafico de doencas
         @if($diseaseStats->count() > 0)
             const ctx = document.getElementById('diseaseChart').getContext('2d');
             new Chart(ctx, {
@@ -224,7 +224,7 @@
             });
         @endif
 
-        // Neighborhood Chart
+        // Grafico de bairros
         @if($neighborhoodStats->count() > 0)
             const ctx2 = document.getElementById('neighborhoodChart').getContext('2d');
             new Chart(ctx2, {

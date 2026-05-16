@@ -9,60 +9,74 @@ use Illuminate\Http\Request;
 
 class DiagnosisController extends Controller
 {
-    private $diagnosisService;
+    private $servicoDiagnostico;
 
-    public function __construct(DiagnosisService $diagnosisService)
+    public function __construct(DiagnosisService $servicoDiagnostico)
     {
-        $this->diagnosisService = $diagnosisService;
+        $this->servicoDiagnostico = $servicoDiagnostico;
     }
 
     /**
-     * Display a listing of the resource.
+     * Exibe a listagem de diagnosticos.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $name = trim((string) $request->input('name', ''));
-        $neighborhood = trim((string) $request->input('neighborhood', ''));
+        $nome = trim((string) $request->input('name', ''));
+        $bairro = trim((string) $request->input('neighborhood', ''));
         $cpf = preg_replace('/\D/', '', (string) $request->input('cpf', ''));
 
-        $diagnoses = Diagnosis::with(['person', 'disease'])
+        $diagnosticos = Diagnosis::with(['person', 'disease'])
             ->unresolved()
-            ->when($name !== '', function ($query) use ($name) {
-                $query->whereHas('person', function ($personQuery) use ($name) {
-                    $personQuery->where('name', 'like', '%' . $name . '%');
+            ->when($nome !== '', function ($query) use ($nome) {
+                $query->whereHas('person', function ($consultaPessoa) use ($nome) {
+                    $consultaPessoa->where('name', 'like', '%' . $nome . '%');
                 });
             })
-            ->when($neighborhood !== '', function ($query) use ($neighborhood) {
-                $query->where('neighborhood', 'like', '%' . $neighborhood . '%');
+            ->when($bairro !== '', function ($query) use ($bairro) {
+                $query->where('neighborhood', 'like', '%' . $bairro . '%');
             })
             ->when($cpf !== '', function ($query) use ($cpf) {
-                $query->whereHas('person', function ($personQuery) use ($cpf) {
-                    $personQuery->where('cpf', 'like', '%' . $cpf . '%');
+                $query->whereHas('person', function ($consultaPessoa) use ($cpf) {
+                    $consultaPessoa->where('cpf', 'like', '%' . $cpf . '%');
                 });
             })
             ->latest()
             ->paginate(15)
             ->withQueryString();
 
-        return view('diagnoses.index', compact('diagnoses'));
+        $bairros = Diagnosis::query()
+            ->unresolved()
+            ->whereNotNull('neighborhood')
+            ->where('neighborhood', '!=', '')
+            ->whereNotNull('symptoms')
+            ->where('symptoms', '!=', '[]')
+            ->select('neighborhood')
+            ->distinct()
+            ->orderBy('neighborhood')
+            ->pluck('neighborhood');
+
+        return view('diagnoses.index', [
+            'diagnoses' => $diagnosticos,
+            'neighborhoods' => $bairros,
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Exibe o formulario para criar um novo recurso.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $people = Person::orderBy('name')->get();
-        $symptoms = [
+        $pessoas = Person::orderBy('name')->get();
+        $sintomas = [
             'Febre',
-            'Dor de cabeça',
+            'Dor de cabeca',
             'Dor de barriga',
             'Tosse',
-            'Vômito',
+            'Vomito',
             'Diarreia',
             'Dor no corpo',
             'Dor de garganta',
@@ -71,55 +85,59 @@ class DiagnosisController extends Controller
             'Calafrios',
             'Perda de olfato',
         ];
-        return view('diagnoses.create', compact('people', 'symptoms'));
+
+        return view('diagnoses.create', [
+            'people' => $pessoas,
+            'symptoms' => $sintomas,
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Armazena um novo recurso.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $dadosValidados = $request->validate([
             'person_id' => 'required|exists:people,id',
             'symptoms' => 'required|array|min:1',
             'symptoms.*' => 'string',
         ]);
 
-        $person = Person::findOrFail($validated['person_id']);
-        $symptoms = $validated['symptoms'];
+        $pessoa = Person::findOrFail($dadosValidados['person_id']);
+        $sintomas = $dadosValidados['symptoms'];
 
-        // Calculate diagnoses
-        $diagnoses = $this->diagnosisService->calculateDiagnosis($person, $symptoms);
-        
-        if (empty($diagnoses)) {
-            return redirect()->back()->with('error', 'Nenhuma doença encontrada.');
+        // Calcula os diagnosticos com base nos sintomas informados.
+        $diagnosticos = $this->servicoDiagnostico->calculateDiagnosis($pessoa, $sintomas);
+
+        if (empty($diagnosticos)) {
+            return redirect()->back()->with('error', 'Nenhuma doenca encontrada.');
         }
 
-        // Get the most likely disease
-        $mostLikely = array_shift($diagnoses);
-        $disease = $mostLikely['disease'];
-        $probability = $mostLikely['probability'];
-        $alertLevel = $this->diagnosisService->getAlertLevel($person->neighborhood);
+        // Seleciona a doenca mais provavel.
+        $maisProvavel = array_shift($diagnosticos);
+        $doenca = $maisProvavel['disease'];
+        $probabilidade = $maisProvavel['probability'];
+        $nivelAlerta = $this->servicoDiagnostico->getAlertLevel($pessoa->neighborhood);
 
-        // Store diagnosis
-        $diagnosis = Diagnosis::create([
-            'person_id' => $person->id,
-            'disease_id' => $disease->id,
-            'probability' => $probability,
-            'symptoms' => $symptoms,
-            'neighborhood' => $person->neighborhood,
-            'alert_level' => $alertLevel,
+        // Salva o diagnostico no banco.
+        $diagnostico = Diagnosis::create([
+            'person_id' => $pessoa->id,
+            'disease_id' => $doenca->id,
+            'probability' => $probabilidade,
+            'symptoms' => $sintomas,
+            'neighborhood' => $pessoa->neighborhood,
+            'alert_level' => $nivelAlerta,
         ]);
 
-        return redirect()->route('diagnoses.show', $diagnosis)
-            ->with('success', 'Diagnóstico realizado com sucesso!');
+        return redirect()->route('diagnoses.show', $diagnostico)
+            ->with('success', 'Diagnostico realizado com sucesso!');
     }
 
     /**
-     * Display the specified resource.
+     * Exibe o recurso especificado.
      *
      * @param  Diagnosis  $diagnosis
      * @return \Illuminate\Http\Response
@@ -127,18 +145,21 @@ class DiagnosisController extends Controller
     public function show(Diagnosis $diagnosis)
     {
         $diagnosis->load(['person', 'disease']);
-        $possibleDiagnoses = $this->diagnosisService
+        $possiveisDiagnosticos = $this->servicoDiagnostico
             ->calculateDiagnosis($diagnosis->person, $diagnosis->symptoms ?? []);
 
-        $possibleDiagnoses = array_values(array_filter($possibleDiagnoses, function ($item) {
+        $possiveisDiagnosticos = array_values(array_filter($possiveisDiagnosticos, function ($item) {
             return ($item['probability'] ?? 0) > 0;
         }));
 
-        return view('diagnoses.show', compact('diagnosis', 'possibleDiagnoses'));
+        return view('diagnoses.show', [
+            'diagnosis' => $diagnosis,
+            'possibleDiagnoses' => $possiveisDiagnosticos,
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove o recurso especificado.
      *
      * @param  Diagnosis  $diagnosis
      * @return \Illuminate\Http\Response
@@ -146,11 +167,12 @@ class DiagnosisController extends Controller
     public function destroy(Diagnosis $diagnosis)
     {
         $diagnosis->delete();
-        return redirect()->route('diagnoses.index')->with('success', 'Diagnóstico deletado com sucesso!');
+
+        return redirect()->route('diagnoses.index')->with('success', 'Diagnostico deletado com sucesso!');
     }
 
     /**
-     * Marcar diagnóstico como resolvido
+     * Marca diagnostico como resolvido.
      *
      * @param  Diagnosis  $diagnosis
      * @param  Request  $request
@@ -158,13 +180,72 @@ class DiagnosisController extends Controller
      */
     public function resolve(Diagnosis $diagnosis, Request $request)
     {
-        $validated = $request->validate([
+        $dadosValidados = $request->validate([
             'resolution_reason' => 'nullable|string|max:255',
         ]);
 
-        $diagnosis->markAsResolved($validated['resolution_reason'] ?? null);
+        $diagnosis->markAsResolved($dadosValidados['resolution_reason'] ?? null);
 
         return redirect()->route('diagnoses.index')
-            ->with('success', 'Diagnóstico marcado como resolvido e removido do banco ativo!');
+            ->with('success', 'Diagnostico marcado como resolvido e removido do banco ativo!');
+    }
+
+    /**
+     * Marca todos os diagnosticos nao resolvidos como resolvidos.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resolveAll(Request $request)
+    {
+        $dadosValidados = $request->validate([
+            'resolution_reason' => 'nullable|string|max:255',
+        ]);
+
+        $totalAtualizado = Diagnosis::query()
+            ->unresolved()
+            ->update([
+                'is_resolved' => true,
+                'resolved_at' => now(),
+                'resolution_reason' => $dadosValidados['resolution_reason'] ?? 'Resolucao global de alertas',
+            ]);
+
+        if ($totalAtualizado === 0) {
+            return redirect()->back()->with('error', 'Nenhum diagnostico ativo para resolver.');
+        }
+
+        return redirect()->back()->with('success', "Todos os diagnosticos ativos foram resolvidos ({$totalAtualizado} registro(s)).");
+    }
+
+    /**
+     * Marca diagnosticos nao resolvidos como resolvidos por bairros selecionados.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resolveByNeighborhood(Request $request)
+    {
+        $dadosValidados = $request->validate([
+            'neighborhoods' => 'required|array|min:1',
+            'neighborhoods.*' => 'required|string|max:255',
+            'resolution_reason' => 'nullable|string|max:255',
+        ]);
+
+        $bairros = array_values(array_unique(array_filter($dadosValidados['neighborhoods'])));
+
+        $totalAtualizado = Diagnosis::query()
+            ->unresolved()
+            ->whereIn('neighborhood', $bairros)
+            ->update([
+                'is_resolved' => true,
+                'resolved_at' => now(),
+                'resolution_reason' => $dadosValidados['resolution_reason'] ?? 'Resolucao por bairro selecionado',
+            ]);
+
+        if ($totalAtualizado === 0) {
+            return redirect()->back()->with('error', 'Nenhum diagnostico ativo encontrado nos bairros selecionados.');
+        }
+
+        return redirect()->back()->with('success', "Diagnosticos ativos resolvidos para os bairros selecionados ({$totalAtualizado} registro(s)).");
     }
 }

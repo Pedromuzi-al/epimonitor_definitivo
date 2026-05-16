@@ -22,6 +22,34 @@
                         <li>Nenhum alerta ativo no momento.</li>
                     @endforelse
                 </ul>
+
+                @php
+                    $alertNeighborhoods = $medicalAlerts->pluck('neighborhood')->unique()->sort()->values();
+                @endphp
+
+                <div class="d-flex flex-wrap align-items-end gap-2 mt-3">
+                    <form method="POST" action="{{ route('diagnoses.resolve-all') }}" onsubmit="return confirm('Confirmar resolução de todos os diagnósticos ativos de todos os locais?');">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-check-double"></i> Confirmar tudo resolvido
+                        </button>
+                    </form>
+
+                    <form method="POST" action="{{ route('diagnoses.resolve-by-neighborhood') }}" class="d-flex flex-wrap align-items-end gap-2" onsubmit="return confirm('Confirmar resolução para os bairros selecionados?');">
+                        @csrf
+                        <div>
+                            <label for="resolveNeighborhoods" class="form-label mb-1">Resolver por bairro</label>
+                            <select name="neighborhoods[]" id="resolveNeighborhoods" class="form-select form-select-sm" multiple size="4" required>
+                                @foreach($alertNeighborhoods as $neighborhood)
+                                    <option value="{{ $neighborhood }}">{{ $neighborhood }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-sm">
+                            <i class="fas fa-check"></i> Confirmar bairros
+                        </button>
+                    </form>
+                </div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
         </div>

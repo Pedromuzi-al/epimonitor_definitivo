@@ -8,28 +8,28 @@ use Illuminate\Http\Request;
 
 class StatisticsController extends Controller
 {
-    private $diagnosisService;
+    private $servicoDiagnostico;
 
-    public function __construct(DiagnosisService $diagnosisService)
+    public function __construct(DiagnosisService $servicoDiagnostico)
     {
-        $this->diagnosisService = $diagnosisService;
+        $this->servicoDiagnostico = $servicoDiagnostico;
     }
 
     /**
-     * Show statistics dashboard
+     * Exibe o painel de estatisticas.
      */
     public function dashboard()
     {
-        $diseaseStats = $this->diagnosisService->getDiseaseStatistics();
-        $neighborhoodStats = $this->diagnosisService->getNeighborhoodStatistics();
-        $totalDiagnoses = Diagnosis::count();
-        $totalPeople = Diagnosis::distinct('person_id')->count();
+        $estatisticasDoencas = $this->servicoDiagnostico->getDiseaseStatistics();
+        $estatisticasBairros = $this->servicoDiagnostico->getNeighborhoodStatistics();
+        $totalDiagnosticos = Diagnosis::count();
+        $totalPessoas = Diagnosis::distinct('person_id')->count();
 
-        return view('statistics.dashboard', compact(
-            'diseaseStats',
-            'neighborhoodStats',
-            'totalDiagnoses',
-            'totalPeople'
-        ));
+        return view('statistics.dashboard', [
+            'diseaseStats' => $estatisticasDoencas,
+            'neighborhoodStats' => $estatisticasBairros,
+            'totalDiagnoses' => $totalDiagnosticos,
+            'totalPeople' => $totalPessoas,
+        ]);
     }
 }

@@ -29,23 +29,23 @@ class MedicalAlertService
             ->havingRaw('count(*) >= ' . self::ALERT_THRESHOLD)
             ->orderByRaw('count(*) desc')
             ->get()
-            ->map(function ($item) {
-                return $this->formatAlert($item);
+            ->map(function ($registro) {
+                return $this->formatAlert($registro);
             });
     }
 
     /**
      * Formatar alerta para o padrão de exibição
      * 
-     * @param object $item
+     * @param object $registro
      * @return array
      */
-    private function formatAlert($item): array
+    private function formatAlert($registro): array
     {
-        $total = (int) $item->total;
+        $total = (int) $registro->total;
 
         return [
-            'neighborhood' => $item->neighborhood,
+            'neighborhood' => $registro->neighborhood,
             'total' => $total,
             'level' => $total >= self::CRITICAL_THRESHOLD ? 'critical' : 'high',
             'hasAlerts' => true,
@@ -72,12 +72,12 @@ class MedicalAlertService
      */
     public function getAlertStatistics(): array
     {
-        $alerts = $this->getActiveMedicalAlerts();
+        $alertas = $this->getActiveMedicalAlerts();
 
         return [
-            'total' => $alerts->count(),
-            'critical_count' => $alerts->where('level', 'critical')->count(),
-            'high_count' => $alerts->where('level', 'high')->count(),
+            'total' => $alertas->count(),
+            'critical_count' => $alertas->where('level', 'critical')->count(),
+            'high_count' => $alertas->where('level', 'high')->count(),
         ];
     }
 }

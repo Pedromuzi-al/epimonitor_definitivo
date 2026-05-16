@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Diagnósticos')
 
@@ -13,6 +13,49 @@
             <a href="{{ route('diagnoses.create') }}" class="btn btn-success btn-lg">
                 <i class="fas fa-plus"></i> Novo Diagnóstico
             </a>
+        </div>
+    </div>
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body">
+            <div class="row g-3 align-items-stretch">
+                <div class="col-lg-6 d-flex">
+                    <div class="p-3 rounded border bg-light h-100 w-100 d-flex flex-column justify-content-between">
+                        <div class="mb-2">
+                            <h6 class="mb-1"><i class="fas fa-globe"></i> Resolução geral</h6>
+                            <small class="text-muted">Marca todos os diagnósticos ativos como resolvidos.</small>
+                        </div>
+                        <form method="POST" action="{{ route('diagnoses.resolve-all') }}" class="d-flex justify-content-center align-items-center flex-grow-1" onsubmit="return confirm('Confirmar resolução de todos os diagnósticos ativos de todos os locais?');">
+                            @csrf
+                            <button type="submit" class="btn btn-danger px-4">
+                                <i class="fas fa-check-double"></i> Confirmar tudo resolvido
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 d-flex">
+                    <div class="p-3 rounded border bg-light h-100 w-100">
+                        <h6 class="mb-1"><i class="fas fa-map-marker-alt"></i> Resolução por bairro</h6>
+                        <small class="text-muted d-block mb-2">Selecione um ou mais bairros com sintomas cadastrados.</small>
+                        <form method="POST" action="{{ route('diagnoses.resolve-by-neighborhood') }}" class="row g-2 align-items-end" onsubmit="return confirm('Confirmar resolução para os bairros selecionados?');">
+                            @csrf
+                            <div class="col-md-8">
+                                <label for="resolveNeighborhoods" class="form-label mb-1">Bairros</label>
+                                <select name="neighborhoods[]" id="resolveNeighborhoods" class="form-select" multiple size="5" required>
+                                    @foreach($neighborhoods as $itemNeighborhood)
+                                        <option value="{{ $itemNeighborhood }}">{{ $itemNeighborhood }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-warning w-100">
+                                    <i class="fas fa-check"></i> Confirmar bairros
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -128,8 +171,13 @@
         </div>
     @else
         <div class="alert alert-info text-center">
-            <i class="fas fa-info-circle"></i> Nenhum diagnóstico realizado. 
+            <i class="fas fa-info-circle"></i> Nenhum diagnóstico realizado.
             <a href="{{ route('diagnoses.create') }}">Realizar o primeiro diagnóstico</a>
         </div>
     @endif
 @endsection
+
+
+
+
+

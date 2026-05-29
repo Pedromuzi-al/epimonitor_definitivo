@@ -60,3 +60,5 @@ Route::post('/diagnoses/resolve-by-neighborhood', [DiagnosisController::class, '
 
 // Estatisticas
 Route::get('/statistics', [StatisticsController::class, 'dashboard'])->name('statistics.dashboard');
+Route::get('/statistics/map', [StatisticsController::class, 'map'])->name('statistics.map');
+Route::get('/statistics/map-data', [StatisticsController::class, 'mapData'])->name('statistics.map-data');

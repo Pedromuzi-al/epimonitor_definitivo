@@ -112,6 +112,9 @@ class AuthController extends Controller
     public function updateProfile(Request $request)
     {
         $usuario = Auth::user();
+        if (!$usuario) {
+            return redirect()->route('login')->with('error', 'Sua sessao expirou. Faca login novamente.');
+        }
 
         $dadosValidados = $request->validate([
             'name' => 'required|string|max:255',
@@ -158,8 +161,15 @@ class AuthController extends Controller
             $usuario->save();
 
             return redirect()->route('user.profile')->with('success', 'Perfil atualizado com sucesso!');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Erro ao atualizar perfil. Tente novamente.');
+        } catch (\Throwable $e) {
+            report($e);
+
+            $mensagem = 'Erro ao atualizar perfil. Tente novamente.';
+            if (app()->environment('local')) {
+                $mensagem .= ' Detalhe: ' . $e->getMessage();
+            }
+
+            return back()->withInput()->with('error', $mensagem);
         }
     }
 

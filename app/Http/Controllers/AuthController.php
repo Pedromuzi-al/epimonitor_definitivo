@@ -108,6 +108,16 @@ class AuthController extends Controller
         return view('user.edit-profile', ['user' => $usuario]);
     }
 
+    // Exibir foto de perfil salva no disco publico
+    public function profilePhoto(User $user)
+    {
+        if (empty($user->profile_photo_path) || !Storage::disk('public')->exists($user->profile_photo_path)) {
+            abort(404);
+        }
+
+        return response()->file(Storage::disk('public')->path($user->profile_photo_path));
+    }
+
     // Atualizar perfil do usuario
     public function updateProfile(Request $request)
     {
@@ -154,6 +164,7 @@ class AuthController extends Controller
                     Storage::disk('public')->delete($usuario->profile_photo_path);
                 }
 
+                Storage::disk('public')->makeDirectory('fotos-perfil');
                 $caminhoFoto = $request->file('profile_photo')->store('fotos-perfil', 'public');
                 $usuario->profile_photo_path = $caminhoFoto;
             }

@@ -16,9 +16,10 @@ Route::get('/register', [AuthController::class, 'showRegisterPage'])->name('auth
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-// Rotas de perfil (autenticadas)
+// Rotas de perfil (autenticadas para todos)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('user.profile');
+    Route::get('/profile/photo/{user}', [AuthController::class, 'profilePhoto'])->name('user.profile-photo');
     Route::get('/profile/edit', [AuthController::class, 'editProfile'])->name('user.edit-profile');
     Route::put('/profile/update', [AuthController::class, 'updateProfile'])->name('user.update-profile');
 });
@@ -28,7 +29,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-// Dashboard (área autenticada)
+// Dashboard (área autenticada - para todos)
 Route::get('/dashboard', function () {
     $totalPessoas = Person::count();
     $totalDiagnosticos = Diagnosis::count();
@@ -45,20 +46,26 @@ Route::get('/dashboard', function () {
         'totalDiseases' => $totalDoencas,
         'latestDiagnoses' => $ultimosDiagnosticos,
     ]);
-})->name('home');
+})->name('home')->middleware('auth');
 
-// Rotas de pessoas
-Route::resource('people', PersonController::class);
+// Rota pública para carregar dados do mapa de Caratinga (usada na home)
+Route::get('/map-data/caratinga', [StatisticsController::class, 'caratingaMapData'])->name('map-data.caratinga')->middleware('auth');
 
-// Rotas de diagnosticos
-Route::resource('diagnoses', DiagnosisController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+// ===== ROTAS EXCLUSIVAS PARA MEDICOS =====
+Route::middleware(['auth', 'is.doctor'])->group(function () {
+    // Rotas de pessoas (gerenciar cadastro)
+    Route::resource('people', PersonController::class);
 
-// Rotas para resolver diagnosticos
-Route::post('/diagnoses/{diagnosis}/resolve', [DiagnosisController::class, 'resolve'])->name('diagnoses.resolve');
-Route::post('/diagnoses/resolve-all', [DiagnosisController::class, 'resolveAll'])->name('diagnoses.resolve-all');
-Route::post('/diagnoses/resolve-by-neighborhood', [DiagnosisController::class, 'resolveByNeighborhood'])->name('diagnoses.resolve-by-neighborhood');
+    // Rotas de diagnosticos (criar, listar, visualizar, deletar)
+    Route::resource('diagnoses', DiagnosisController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 
-// Estatisticas
-Route::get('/statistics', [StatisticsController::class, 'dashboard'])->name('statistics.dashboard');
-Route::get('/statistics/map', [StatisticsController::class, 'map'])->name('statistics.map');
-Route::get('/statistics/map-data', [StatisticsController::class, 'mapData'])->name('statistics.map-data');
+    // Rotas para resolver diagnosticos
+    Route::post('/diagnoses/{diagnosis}/resolve', [DiagnosisController::class, 'resolve'])->name('diagnoses.resolve');
+    Route::post('/diagnoses/resolve-all', [DiagnosisController::class, 'resolveAll'])->name('diagnoses.resolve-all');
+    Route::post('/diagnoses/resolve-by-neighborhood', [DiagnosisController::class, 'resolveByNeighborhood'])->name('diagnoses.resolve-by-neighborhood');
+
+    // Rotas de estatisticas
+    Route::get('/statistics', [StatisticsController::class, 'dashboard'])->name('statistics.dashboard');
+    Route::get('/statistics/map', [StatisticsController::class, 'map'])->name('statistics.map');
+    Route::get('/statistics/map-data', [StatisticsController::class, 'mapData'])->name('statistics.map-data');
+});

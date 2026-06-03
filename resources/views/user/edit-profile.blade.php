@@ -21,6 +21,12 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
                     <form action="{{ route('user.update-profile') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -83,7 +89,7 @@
 
                             @if(!empty($user->profile_photo_path))
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Foto atual" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 2px solid #dee2e6;">
+                                    <img src="{{ route('user.profile-photo', $user) }}" alt="Foto atual" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 2px solid #dee2e6;">
                                 </div>
                             @endif
 

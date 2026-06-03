@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
             return $rule->passes($attribute, $value);
         }, 'CPF invalido.');
 
-        // Registrar Medical Alert Service no View Composer
+        // Registrar Alerta medicinal Service no View Composer
         View::composer('*', function ($view) {
             $medicalAlertService = app(MedicalAlertService::class);
             $medicalAlerts = $medicalAlertService->getActiveMedicalAlerts();

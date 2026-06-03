@@ -307,21 +307,26 @@
                             <i class="fas fa-heartbeat"></i> Monitoramento de Sintomas
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('people.*') ? 'active' : '' }}" href="{{ route('people.index') }}">
-                            <i class="fas fa-users"></i> Pessoas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('diagnoses.*') ? 'active' : '' }}" href="{{ route('diagnoses.index') }}">
-                            <i class="fas fa-stethoscope"></i> Diagnosticos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('statistics.*') ? 'active' : '' }}" href="{{ route('statistics.dashboard') }}">
-                            <i class="fas fa-chart-bar"></i> Estatisticas
-                        </a>
-                    </li>
+                    
+                    {{-- Apenas para medicos --}}
+                    @if(auth()->check() && auth()->user()->user_type === 'doctor')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('people.*') ? 'active' : '' }}" href="{{ route('people.index') }}">
+                                <i class="fas fa-users"></i> Pessoas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('diagnoses.*') ? 'active' : '' }}" href="{{ route('diagnoses.index') }}">
+                                <i class="fas fa-stethoscope"></i> Diagnosticos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('statistics.*') ? 'active' : '' }}" href="{{ route('statistics.dashboard') }}">
+                                <i class="fas fa-chart-bar"></i> Estatisticas
+                            </a>
+                        </li>
+                    @endif
+                    
                     <li class="nav-item dropdown">
                         @include('components.notification-bell')
                     </li>
@@ -329,7 +334,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                             @if(!empty(Auth::user()->profile_photo_path))
-                                <img src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="Foto de perfil" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; margin-right: 6px; border: 1px solid rgba(255,255,255,.6);">
+                                <img src="{{ route('user.profile-photo', Auth::user()) }}" alt="Foto de perfil" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; margin-right: 6px; border: 1px solid rgba(255,255,255,.6);">
                             @else
                                 <i class="fas fa-user-circle"></i>
                             @endif

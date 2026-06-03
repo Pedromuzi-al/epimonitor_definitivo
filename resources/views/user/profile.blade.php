@@ -16,12 +16,18 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
                     <div class="row mb-4">
                         <div class="col-md-3 text-center">
                             <div class="profile-avatar mb-3">
                                 @if(!empty($user->profile_photo_path))
-                                    <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Foto de perfil" style="width: 120px; height: 120px; margin: 0 auto; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 2px 12px rgba(0,0,0,.2);">
+                                    <img src="{{ route('user.profile-photo', $user) }}" alt="Foto de perfil" style="width: 120px; height: 120px; margin: 0 auto; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 2px 12px rgba(0,0,0,.2);">
                                 @else
                                     <div style="width: 120px; height: 120px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); display: flex; align-items: center; justify-content: center;">
                                         <i class="fas fa-user" style="font-size: 60px; color: white;"></i>

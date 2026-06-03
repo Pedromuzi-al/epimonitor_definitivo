@@ -95,4 +95,57 @@ class StatisticsController extends Controller
             'locations' => $agrupados,
         ]);
     }
+
+    /**
+     * Retorna dados agregados apenas de Caratinga para o mapa da home.
+     */
+    public function caratingaMapData()
+    {
+        $registros = Diagnosis::query()
+            ->join('people', 'people.id', '=', 'diagnoses.person_id')
+            ->join('diseases', 'diseases.id', '=', 'diagnoses.disease_id')
+            ->unresolved()
+            ->whereNotNull('diagnoses.neighborhood')
+            ->where('diagnoses.neighborhood', '!=', '')
+            ->whereRaw("LOWER(TRIM(people.city)) = ?", [mb_strtolower('Caratinga', 'UTF-8')])
+            ->select([
+                DB::raw('TRIM(diagnoses.neighborhood) as neighborhood'),
+                DB::raw('COALESCE(NULLIF(TRIM(people.city), \'\'), \'Cidade nao informada\') as city'),
+                DB::raw('COALESCE(NULLIF(TRIM(people.state), \'\'), \'Estado nao informado\') as state'),
+                'diseases.name as disease_name',
+            ])
+            ->get();
+
+        $agrupados = $registros
+            ->groupBy(function ($item) {
+                return mb_strtolower($item->neighborhood, 'UTF-8') . '|' .
+                    mb_strtolower($item->city, 'UTF-8') . '|' .
+                    mb_strtolower($item->state, 'UTF-8');
+            })
+            ->map(function ($grupo) {
+                $primeiro = $grupo->first();
+                $contagemDoencas = $grupo->groupBy('disease_name')->map->count()->sortDesc();
+
+                return [
+                    'neighborhood' => $primeiro->neighborhood,
+                    'city' => $primeiro->city,
+                    'state' => $primeiro->state,
+                    'total_cases' => $grupo->count(),
+                    'top_disease' => (string) $contagemDoencas->keys()->first(),
+                    'disease_breakdown' => $contagemDoencas->map(function ($total, $nome) {
+                        return [
+                            'disease' => (string) $nome,
+                            'cases' => (int) $total,
+                        ];
+                    })->values(),
+                ];
+            })
+            ->sortByDesc('total_cases')
+            ->values();
+
+        return response()->json([
+            'updated_at' => now()->toDateTimeString(),
+            'locations' => $agrupados,
+        ]);
+    }
 }

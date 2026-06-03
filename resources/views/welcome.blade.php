@@ -257,38 +257,6 @@
         </div>
 
         <div class="welcome-content">
-            <!-- Card: Novo Usuário -->
-            <div class="welcome-card">
-                <div>
-                    <div class="welcome-card-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <h2>Novo por aqui?</h2>
-                    <p>Crie sua conta agora e comece a monitorar sua saúde</p>
-                    <div class="welcome-card-features">
-                        <div class="feature-row">
-                            <i class="fas fa-check"></i>
-                            <span>Registro rápido e seguro</span>
-                        </div>
-                        <div class="feature-row">
-                            <i class="fas fa-check"></i>
-                            <span>Diagnósticos instantâneos</span>
-                        </div>
-                        <div class="feature-row">
-                            <i class="fas fa-check"></i>
-                            <span>Acompanhe seus sintomas</span>
-                        </div>
-                        <div class="feature-row">
-                            <i class="fas fa-check"></i>
-                            <span>Alertas personalizados</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="{{ route('auth.register') }}" class="btn">
-                    <i class="fas fa-arrow-right"></i> Criar Conta
-                </a>
-            </div>
-
             <!-- Card: Usuário Existente -->
             <div class="welcome-card">
                 <div>
@@ -318,6 +286,38 @@
                 </div>
                 <a href="{{ route('auth.login') }}" class="btn">
                     <i class="fas fa-arrow-right"></i> Fazer Login
+                </a>
+            </div>
+
+            <!-- Card: Novo Usuário -->
+            <div class="welcome-card">
+                <div>
+                    <div class="welcome-card-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2>Novo por aqui?</h2>
+                    <p>Crie sua conta agora e comece a monitorar sua saúde</p>
+                    <div class="welcome-card-features">
+                        <div class="feature-row">
+                            <i class="fas fa-check"></i>
+                            <span>Registro rápido e seguro</span>
+                        </div>
+                        <div class="feature-row">
+                            <i class="fas fa-check"></i>
+                            <span>Diagnósticos instantâneos</span>
+                        </div>
+                        <div class="feature-row">
+                            <i class="fas fa-check"></i>
+                            <span>Acompanhe seus sintomas</span>
+                        </div>
+                        <div class="feature-row">
+                            <i class="fas fa-check"></i>
+                            <span>Alertas personalizados</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{{ route('auth.register') }}" class="btn">
+                    <i class="fas fa-arrow-right"></i> Criar Conta
                 </a>
             </div>
         </div>

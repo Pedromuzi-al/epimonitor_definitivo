@@ -115,12 +115,13 @@ class AuthController extends Controller
             abort(404);
         }
 
-        return response()->file(Storage::disk('public')->path($user->profile_photo_path));
+        return response()->file($this->caminhoFotoPerfil($user));
     }
 
     // Atualizar perfil do usuario
     public function updateProfile(Request $request)
     {
+        /** @var User|null $usuario */
         $usuario = Auth::user();
         if (!$usuario) {
             return redirect()->route('login')->with('error', 'Sua sessao expirou. Faca login novamente.');
@@ -169,7 +170,7 @@ class AuthController extends Controller
                 $usuario->profile_photo_path = $caminhoFoto;
             }
 
-            $usuario->save();
+            $this->salvarUsuario($usuario);
 
             return redirect()->route('user.profile')->with('success', 'Perfil atualizado com sucesso!');
         } catch (\Throwable $e) {
@@ -182,6 +183,16 @@ class AuthController extends Controller
 
             return back()->withInput()->with('error', $mensagem);
         }
+    }
+
+    private function salvarUsuario(User $usuario): void
+    {
+        $usuario->save();
+    }
+
+    private function caminhoFotoPerfil(User $user): string
+    {
+        return storage_path('app/public/' . $user->profile_photo_path);
     }
 
     // Processar logout

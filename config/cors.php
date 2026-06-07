@@ -4,14 +4,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration
+    | Configuração de Compartilhamento de Recursos entre Origens (CORS)
     |--------------------------------------------------------------------------
     |
-    | Here you may configure your settings for cross-origin resource sharing
-    | or "CORS". This determines what cross-origin operations may execute
-    | in web browsers. You are free to adjust these settings as needed.
+    | Aqui você pode configurar suas definições para compartilhamento de recursos entre origens
+    | ou "CORS". Isto determina quais operações entre origens podem ser executadas
+    | em navegadores da web. Você é livre para ajustar essas definições conforme necessário.
     |
-    | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+    | Para saber mais: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
 

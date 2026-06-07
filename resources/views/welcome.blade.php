@@ -172,6 +172,21 @@
             font-size: 1.05rem;
         }
 
+        .forgot-password-link {
+            display: block;
+            margin-top: 12px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .forgot-password-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
         .welcome-card:nth-child(1) .btn {
             background-color: var(--secondary-color);
             color: white;
@@ -284,9 +299,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('auth.login') }}" class="btn">
-                    <i class="fas fa-arrow-right"></i> Fazer Login
-                </a>
+                <div>
+                    <a href="{{ route('auth.login') }}" class="btn">
+                        <i class="fas fa-arrow-right"></i> Fazer Login
+                    </a>
+                    <a href="{{ route('auth.password.request') }}" class="forgot-password-link">
+                        Esqueceu a senha?
+                    </a>
+                </div>
             </div>
 
             <!-- Card: Novo Usuário -->

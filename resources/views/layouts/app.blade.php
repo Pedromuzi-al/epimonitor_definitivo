@@ -25,7 +25,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Navigation */
+        /* Navegação */
         .navbar {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -58,14 +58,14 @@
             border-bottom: 2px solid #fff;
         }
 
-        /* Main Content */
+        /* Conteúdo Principal */
         main {
             min-height: calc(100vh - 80px);
             padding-top: 2rem;
             padding-bottom: 2rem;
         }
 
-        /* Cards */
+        /* Cartões */
         .card {
             border: none;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -83,7 +83,7 @@
             border: none;
         }
 
-        /* Buttons */
+        /* Botões */
         .btn-primary {
             background-color: var(--secondary-color);
             border-color: var(--secondary-color);
@@ -126,14 +126,14 @@
             transform: translateY(-1px);
         }
 
-        /* Forms */
+        /* Formulários */
         .form-control:focus,
         .form-select:focus {
             border-color: var(--secondary-color);
             box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
         }
 
-        /* Alert Badges */
+        /* Crachás de Alerta */
         .badge-critical {
             background-color: var(--danger-color);
         }
@@ -151,7 +151,7 @@
             background-color: var(--success-color);
         }
 
-        /* Tables */
+        /* Tabelas */
         .table {
             background-color: white;
         }
@@ -165,7 +165,7 @@
             background-color: #f8f9fa;
         }
 
-        /* Stats */
+        /* Estatísticas */
         .stat-card {
             border-left: 4px solid var(--secondary-color);
             padding: 1.5rem;
@@ -184,7 +184,7 @@
             margin: 0.5rem 0 0 0;
         }
 
-        /* Footer */
+        /* Rodapé */
         footer {
             background-color: var(--primary-color);
             color: white;
@@ -193,7 +193,7 @@
             margin-top: 3rem;
         }
 
-        /* Notification Bell Badge Animation */
+        /* Animação do Crachá do Sino de Notificação */
         @keyframes pulse-badge {
             0% {
                 box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
@@ -249,7 +249,7 @@
             background-color: #f8f9fa;
         }
 
-        /* Alerts */
+        /* Alertas */
         .alert {
             border-radius: 5px;
         }
@@ -260,13 +260,13 @@
             color: white;
         }
 
-        /* Badge */
+        /* Crachá */
         .badge {
             padding: 0.5rem 0.75rem;
             font-size: 0.875rem;
         }
 
-        /* Progress Bar */
+        /* Barra de Progresso */
         .progress {
             height: 25px;
         }
@@ -275,7 +275,7 @@
             background-color: var(--secondary-color);
         }
 
-        /* Responsive */
+        /* Responsivo */
         @media (max-width: 768px) {
             main {
                 padding-top: 1rem;

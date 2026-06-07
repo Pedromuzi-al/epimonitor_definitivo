@@ -4,12 +4,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Queue Connection Name
+    | Nome da Conexão Padrão da Fila
     |--------------------------------------------------------------------------
     |
-    | Laravel's queue API supports an assortment of back-ends via a single
-    | API, giving you convenient access to each back-end using the same
-    | syntax for every one. Here you may define a default connection.
+    | A API de fila do Laravel suporta uma variedade de back-ends através de um único
+    | API, oferecendo-lhe acesso conveniente a cada back-end usando o mesmo
+    | sintaxe para cada um. Aqui você pode definir uma conexão padrão.
     |
     */
 
@@ -17,12 +17,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Queue Connections
+    | Conexões da Fila
     |--------------------------------------------------------------------------
     |
-    | Here you may configure the connection information for each server that
-    | is used by your application. A default configuration has been added
-    | for each back-end shipped with Laravel. You are free to add more.
+    | Aqui você pode configurar as informações de conexão para cada servidor que
+    | é usado pela sua aplicação. Uma configuração padrão foi adicionada
+    | para cada back-end enviado com Laravel. Você é livre para adicionar mais.
     |
     | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "null"
     |

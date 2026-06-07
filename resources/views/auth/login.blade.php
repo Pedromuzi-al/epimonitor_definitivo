@@ -167,6 +167,21 @@
             margin-top: 15px;
         }
 
+        .forgot-password-link {
+            display: block;
+            margin-top: 12px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: right;
+            text-decoration: none;
+        }
+
+        .forgot-password-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
         .form-check-input {
             width: 18px;
             height: 18px;
@@ -310,6 +325,10 @@
                             Manter conectado
                         </label>
                     </div>
+
+                    <a href="{{ route('auth.password.request') }}" class="forgot-password-link">
+                        Esqueceu a senha?
+                    </a>
 
                     <button type="submit" class="btn btn-login btn-login-primary">
                         <i class="fas fa-sign-in-alt"></i> Entrar

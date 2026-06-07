@@ -4,14 +4,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Broadcaster
+    | Broadcaster Padrão
     |--------------------------------------------------------------------------
     |
-    | This option controls the default broadcaster that will be used by the
-    | framework when an event needs to be broadcast. You may set this to
-    | any of the connections defined in the "connections" array below.
+    | Esta opção controla o broadcaster padrão que será usado pelo
+    | framework quando um evento precisar ser transmitido. Você pode defini-lo como
+    | qualquer uma das conexões definidas no array "connections" abaixo.
     |
-    | Supported: "pusher", "ably", "redis", "log", "null"
+    | Suportado: "pusher", "ably", "redis", "log", "null"
     |
     */
 
@@ -19,12 +19,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Broadcast Connections
+    | Conexões de Transmissão
     |--------------------------------------------------------------------------
     |
-    | Here you may define all of the broadcast connections that will be used
-    | to broadcast events to other systems or over websockets. Samples of
-    | each available type of connection are provided inside this array.
+    | Aqui você pode definir todas as conexões de transmissão que serão usadas
+    | para transmitir eventos para outros sistemas ou sobre websockets. Exemplos de
+    | cada tipo disponível de conexão são fornecidos dentro deste array.
     |
     */
 

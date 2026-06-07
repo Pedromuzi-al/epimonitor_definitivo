@@ -12,6 +12,10 @@ use App\Http\Controllers\AuthController;
 // Rotas de autenticação (públicas)
 Route::get('/login', [AuthController::class, 'showLoginPage'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordPage'])->name('auth.password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetLink'])->name('auth.password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordPage'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('auth.password.update');
 Route::get('/register', [AuthController::class, 'showRegisterPage'])->name('auth.register');
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
@@ -48,9 +52,6 @@ Route::get('/dashboard', function () {
     ]);
 })->name('home')->middleware('auth');
 
-// Rota pública para carregar dados do mapa de Caratinga (usada na home)
-Route::get('/map-data/caratinga', [StatisticsController::class, 'caratingaMapData'])->name('map-data.caratinga')->middleware('auth');
-
 // ===== ROTAS EXCLUSIVAS PARA MEDICOS =====
 Route::middleware(['auth', 'is.doctor'])->group(function () {
     // Rotas de pessoas (gerenciar cadastro)
@@ -66,6 +67,4 @@ Route::middleware(['auth', 'is.doctor'])->group(function () {
 
     // Rotas de estatisticas
     Route::get('/statistics', [StatisticsController::class, 'dashboard'])->name('statistics.dashboard');
-    Route::get('/statistics/map', [StatisticsController::class, 'map'])->name('statistics.map');
-    Route::get('/statistics/map-data', [StatisticsController::class, 'mapData'])->name('statistics.map-data');
 });

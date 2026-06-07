@@ -6,12 +6,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cache Store
+    | Armazenamento de Cache Padrão
     |--------------------------------------------------------------------------
     |
-    | This option controls the default cache connection that gets used while
-    | using this caching library. This connection is used when another is
-    | not explicitly specified when executing a given caching function.
+    | Esta opção controla a conexão de cache padrão que é usada enquanto
+    | usa esta biblioteca de cache. Esta conexão é usada quando outra não é
+    | explicitamente especificada ao executar uma função de cache fornecida.
     |
     */
 
@@ -19,14 +19,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Stores
+    | Armazenamentos de Cache
     |--------------------------------------------------------------------------
     |
-    | Here you may define all of the cache "stores" for your application as
-    | well as their drivers. You may even define multiple stores for the
-    | same cache driver to group types of items stored in your caches.
+    | Aqui você pode definir todos os "armazenamentos" de cache para sua aplicação, bem como
+    | seus drivers. Você pode até definir múltiplos armazenamentos para o
+    | mesmo driver de cache para agrupar tipos de itens armazenados em seus caches.
     |
-    | Supported drivers: "apc", "array", "database", "file",
+    | Drivers suportados: "apc", "array", "database", "file",
     |         "memcached", "redis", "dynamodb", "octane", "null"
     |
     */

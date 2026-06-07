@@ -11,25 +11,25 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The path to the "home" route for your application.
+     * O caminho para a rota "home" da sua aplicação.
      *
-     * This is used by Laravel authentication to redirect users after login.
+     * Isto é usado pela autenticação Laravel para redirecionar usuários após o login.
      *
      * @var string
      */
     public const HOME = '/home';
 
     /**
-     * The controller namespace for the application.
+     * O espaço de nomes do controller para a aplicação.
      *
-     * When present, controller route declarations will automatically be prefixed with this namespace.
+     * Quando presente, as declarações de rota do controller serão automaticamente prefixadas com este espaço de nomes.
      *
      * @var string|null
      */
     // protected $namespace = 'App\\Http\\Controllers';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Defina suas ligações de modelo de rota, filtros de padrão, etc.
      *
      * @return void
      */
@@ -50,7 +50,7 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure the rate limiters for the application.
+     * Configure os limitadores de taxa para a aplicação.
      *
      * @return void
      */

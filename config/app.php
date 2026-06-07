@@ -4,12 +4,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Name
+    | Nome da Aplicação
     |--------------------------------------------------------------------------
     |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | Este valor é o nome da sua aplicação. Este valor é usado quando o
+    | framework precisa colocar o nome da aplicação em uma notificação ou
+    | qualquer outro local conforme exigido pela aplicação ou seus pacotes.
     |
     */
 
@@ -17,12 +17,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Environment
+    | Ambiente da Aplicação
     |--------------------------------------------------------------------------
     |
-    | This value determines the "environment" your application is currently
-    | running in. This may determine how you prefer to configure various
-    | services the application utilizes. Set this in your ".env" file.
+    | Este valor determina o "ambiente" em que sua aplicação está sendo
+    | executada. Isso pode determinar como você prefere configurar vários
+    | serviços que a aplicação utiliza. Defina isto em seu arquivo ".env".
     |
     */
 
@@ -30,12 +30,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Debug Mode
+    | Modo de Debug da Aplicação
     |--------------------------------------------------------------------------
     |
-    | When your application is in debug mode, detailed error messages with
-    | stack traces will be shown on every error that occurs within your
-    | application. If disabled, a simple generic error page is shown.
+    | Quando sua aplicação está no modo de debug, mensagens de erro detalhadas com
+    | rastreamento de pilha serão mostradas em cada erro que ocorrer em sua
+    | aplicação. Se desabilitado, uma página de erro genérica simples é mostrada.
     |
     */
 
@@ -43,12 +43,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application URL
+    | URL da Aplicação
     |--------------------------------------------------------------------------
     |
-    | This URL is used by the console to properly generate URLs when using
-    | the Artisan command line tool. You should set this to the root of
-    | your application so that it is used when running Artisan tasks.
+    | Esta URL é usada pelo console para gerar corretamente URLs ao usar
+    | a ferramenta de linha de comando Artisan. Você deve defini-la como a raiz de
+    | sua aplicação para que seja usada ao executar tarefas Artisan.
     |
     */
 
@@ -58,12 +58,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone
+    | Fuso Horário da Aplicação
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default timezone for your application, which
-    | will be used by the PHP date and date-time functions. We have gone
-    | ahead and set this to a sensible default for you out of the box.
+    | Aqui você pode especificar o fuso horário padrão para sua aplicação, que
+    | será usado pelas funções de data e data-hora do PHP. Já escolhemos
+    | um padrão sensível para você neste pacote.
     |
     */
 
@@ -71,12 +71,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration
+    | Configuração de Localização da Aplicação
     |--------------------------------------------------------------------------
     |
-    | The application locale determines the default locale that will be used
-    | by the translation service provider. You are free to set this value
-    | to any of the locales which will be supported by the application.
+    | A localização da aplicação determina a localização padrão que será usada
+    | pelo provedor de serviço de tradução. Você está livre para definir este valor
+    | para qualquer uma das localizações que serão suportadas pela aplicação.
     |
     */
 
@@ -84,12 +84,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Fallback Locale
+    | Localização Substituta da Aplicação
     |--------------------------------------------------------------------------
     |
-    | The fallback locale determines the locale to use when the current one
-    | is not available. You may change the value to correspond to any of
-    | the language folders that are provided through your application.
+    | A localização substituta determina a localização a usar quando a atual
+    | não está disponível. Você pode alterar o valor para corresponder a qualquer uma das
+    | pastas de idioma fornecidas através de sua aplicação.
     |
     */
 
@@ -97,12 +97,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Faker Locale
+    | Localização do Faker
     |--------------------------------------------------------------------------
     |
-    | This locale will be used by the Faker PHP library when generating fake
-    | data for your database seeds. For example, this will be used to get
-    | localized telephone numbers, street address information and more.
+    | Esta localização será usada pela biblioteca Faker PHP ao gerar dados falsos
+    | para suas sementes de banco de dados. Por exemplo, isto será usado para obter
+    | números de telefone localizados, informações de endereço de rua e muito mais.
     |
     */
 
@@ -110,12 +110,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Encryption Key
+    | Chave de Criptografia
     |--------------------------------------------------------------------------
     |
-    | This key is used by the Illuminate encrypter service and should be set
-    | to a random, 32 character string, otherwise these encrypted strings
-    | will not be safe. Please do this before deploying an application!
+    | Esta chave é usada pelo serviço criptografador Illuminate e deve ser definida
+    | como uma string aleatória de 32 caracteres, caso contrário essas strings criptografadas
+    | não serão seguras. Faça isso antes de implantar uma aplicação!
     |
     */
 
@@ -125,19 +125,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Provedores de Serviço Carregados Automaticamente
     |--------------------------------------------------------------------------
     |
-    | The service providers listed here will be automatically loaded on the
-    | request to your application. Feel free to add your own services to
-    | this array to grant expanded functionality to your applications.
+    | Os provedores de serviço listados aqui serão carregados automaticamente na
+    | requisição para sua aplicação. Sinta-se à vontade para adicionar seus próprios serviços a
+    | este array para conceder funcionalidade expandida às suas aplicações.
     |
     */
 
     'providers' => [
 
         /*
-         * Laravel Framework Service Providers...
+         * Provedores de Serviço do Framework Laravel...
          */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -163,11 +163,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Package Service Providers...
+         * Provedores de Serviço do Pacote...
          */
 
         /*
-         * Application Service Providers...
+         * Provedores de Serviço da Aplicação...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
@@ -179,12 +179,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Class Aliases
+    | Álias de Classe
     |--------------------------------------------------------------------------
     |
-    | This array of class aliases will be registered when this application
-    | is started. However, feel free to register as many as you wish as
-    | the aliases are "lazy" loaded so they don't hinder performance.
+    | Este array de álias de classe será registrado quando esta aplicação
+    | é iniciada. No entanto, sinta-se à vontade para registrar quantos desejar, pois
+    | os álias são carregados "lazy" para não prejudicarem o desempenho.
     |
     */
 

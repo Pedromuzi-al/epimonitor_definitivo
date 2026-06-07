@@ -6,7 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
@@ -20,6 +23,90 @@ class AuthController extends Controller
     public function showRegisterPage()
     {
         return view('auth.register');
+    }
+
+    // Mostrar orientacao para redefinicao de senha
+    public function showForgotPasswordPage()
+    {
+        return view('auth.forgot-password');
+    }
+
+    // Enviar email com link de redefinicao de senha
+    public function sendPasswordResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ], [
+            'email.required' => 'O email e obrigatorio',
+            'email.email' => 'Digite um email valido',
+        ]);
+
+        try {
+            $status = Password::sendResetLink($request->only('email'));
+        } catch (\Throwable $e) {
+            report($e);
+
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['email' => 'Nao foi possivel enviar o email agora. Verifique a configuracao de envio do sistema.']);
+        }
+
+        if ($status === Password::RESET_LINK_SENT) {
+            if (config('mail.default') === 'log') {
+                return back()->with('success', 'Link gerado em modo local. Consulte o arquivo storage/logs/laravel.log para copiar o link de redefinicao.');
+            }
+
+            return back()->with('success', 'Enviamos um link de redefinicao para o email informado.');
+        }
+
+        return back()
+            ->withInput($request->only('email'))
+            ->withErrors(['email' => 'Nao encontramos uma conta com esse email.']);
+    }
+
+    // Mostrar formulario para cadastrar nova senha
+    public function showResetPasswordPage(Request $request, string $token)
+    {
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email,
+        ]);
+    }
+
+    // Atualizar senha usando token enviado por email
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|confirmed',
+        ], [
+            'email.required' => 'O email e obrigatorio',
+            'email.email' => 'Digite um email valido',
+            'password.required' => 'A nova senha e obrigatoria',
+            'password.min' => 'A senha deve ter pelo menos 6 caracteres',
+            'password.confirmed' => 'As senhas nao conferem',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect()->route('auth.login')->with('success', 'Senha redefinida com sucesso. Faca login com a nova senha.');
+        }
+
+        return back()
+            ->withInput($request->only('email'))
+            ->withErrors(['email' => 'O link de redefinicao e invalido ou expirou. Solicite um novo link.']);
     }
 
     // Processar login

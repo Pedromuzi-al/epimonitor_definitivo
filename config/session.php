@@ -6,14 +6,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Session Driver
+    | Driver de Sessão Padrão
     |--------------------------------------------------------------------------
     |
-    | This option controls the default session "driver" that will be used on
-    | requests. By default, we will use the lightweight native driver but
-    | you may specify any of the other wonderful drivers provided here.
+    | Esta opção controla o "driver" de sessão padrão que será usado em
+    | requisições. Por padrão, usaremos o driver nativo leve, mas
+    | você pode especificar qualquer um dos outros drivers maravilhosos fornecidos aqui.
     |
-    | Supported: "file", "cookie", "database", "apc",
+    | Suportado: "file", "cookie", "database", "apc",
     |            "memcached", "redis", "dynamodb", "array"
     |
     */
@@ -22,12 +22,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Lifetime
+    | Tempo de Vida da Sessão
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the number of minutes that you wish the session
-    | to be allowed to remain idle before it expires. If you want them
-    | to immediately expire on the browser closing, set that option.
+    | Aqui você pode especificar o número de minutos que deseja que a sessão
+    | tenha permissão para permanecer ocioso antes de expirar. Se quiser que
+    | expirem imediatamente ao fechar o navegador, defina essa opção.
     |
     */
 
@@ -37,12 +37,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Encryption
+    | Criptografia de Sessão
     |--------------------------------------------------------------------------
     |
-    | This option allows you to easily specify that all of your session data
-    | should be encrypted before it is stored. All encryption will be run
-    | automatically by Laravel and you can use the Session like normal.
+    | Esta opção permite que você especifique facilmente que todos os dados da sua sessão
+    | devem ser criptografados antes de serem armazenados. Toda a criptografia será executada
+    | automaticamente pelo Laravel e você pode usar a Session como normal.
     |
     */
 
@@ -50,12 +50,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session File Location
+    | Localização do Arquivo de Sessão
     |--------------------------------------------------------------------------
     |
-    | When using the native session driver, we need a location where session
-    | files may be stored. A default has been set for you but a different
-    | location may be specified. This is only needed for file sessions.
+    | Ao usar o driver de sessão nativa, precisamos de um local onde a sessão
+    | arquivos podem ser armazenados. Um padrão foi definido para você, mas um local diferente
+    | pode ser especificado. Isto é apenas necessário para sessões de arquivo.
     |
     */
 
@@ -63,12 +63,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Connection
+    | Conexão do Banco de Dados da Sessão
     |--------------------------------------------------------------------------
     |
-    | When using the "database" or "redis" session drivers, you may specify a
-    | connection that should be used to manage these sessions. This should
-    | correspond to a connection in your database configuration options.
+    | Ao usar os drivers de sessão "database" ou "redis", você pode especificar uma
+    | conexão que deve ser usada para gerenciar essas sessões. Isto deve
+    | corresponder a uma conexão em suas opções de configuração do banco de dados.
     |
     */
 
@@ -76,12 +76,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Table
+    | Tabela do Banco de Dados da Sessão
     |--------------------------------------------------------------------------
     |
-    | When using the "database" session driver, you may specify the table we
-    | should use to manage the sessions. Of course, a sensible default is
-    | provided for you; however, you are free to change this as needed.
+    | Ao usar o driver de sessão "database", você pode especificar a tabela que
+    | devemos usar para gerenciar as sessões. É claro, um padrão sensível é
+    | fornecido para você; no entanto, você é livre para mudar isto conforme necessário.
     |
     */
 
@@ -89,14 +89,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cache Store
+    | Armazenamento de Cache de Sessão
     |--------------------------------------------------------------------------
     |
-    | While using one of the framework's cache driven session backends you may
-    | list a cache store that should be used for these sessions. This value
-    | must match with one of the application's configured cache "stores".
+    | Ao usar um dos backends de sessão acionados por cache do framework, você pode
+    | listar um armazenamento de cache que deve ser usado para essas sessões. Este valor
+    | deve corresponder a um dos "armazenamentos" de cache configurados da aplicação.
     |
-    | Affects: "apc", "dynamodb", "memcached", "redis"
+    | Afeta: "apc", "dynamodb", "memcached", "redis"
     |
     */
 

@@ -4,13 +4,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Third Party Services
+    | Serviços de Terceiros
     |--------------------------------------------------------------------------
     |
-    | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
+    | Este arquivo serve para armazenar as credenciais para serviços de terceiros, como
+    | Mailgun, Postmark, AWS e muito mais. Este arquivo fornece a localização de fato
+    | para este tipo de informação, permitindo que pacotes tenham
+    | um arquivo convencional para localizar as várias credenciais de serviço.
     |
     */
 
@@ -28,10 +28,6 @@ return [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    ],
-
-    'google_maps' => [
-        'api_key' => env('GOOGLE_MAPS_API_KEY', ''),
     ],
 
 ];

@@ -118,32 +118,17 @@
         </div>
     </div>
 
-    <div class="row g-4 mt-2">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="fas fa-map-marked-alt"></i> Mapa de Casos - Caratinga</h5>
-                    <button id="reloadCaratingaMap" class="btn btn-sm btn-outline-primary">
-                        <i class="fas fa-sync-alt"></i> Atualizar
-                    </button>
-                </div>
-                <div class="card-body p-0">
-                    <div id="caratingaMap" style="width: 100%; height: 400px; border-radius: 0 0 12px 12px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('css')
 <style>
     .stat-card {
-        background: linear-gradient(135deg, #1f7fb8 0%, #20a77b 100%);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: white;
         padding: 2rem;
-        border-left: 4px solid #16c79a;
+        border-left: 4px solid var(--secondary-color);
         border-radius: 8px;
-        box-shadow: 0 0.35rem 1rem rgba(31, 127, 184, 0.2);
+        box-shadow: 0 0.35rem 1rem rgba(52, 152, 219, 0.22);
         text-align: center;
     }
 
@@ -159,155 +144,5 @@
         margin: 0.5rem 0 0 0;
     }
 
-    /* Leaflet styles */
-    #caratingaMap {
-        border-radius: 0 0 12px 12px;
-        z-index: 1;
-    }
-
-    .leaflet-popup-content-wrapper {
-        border-radius: 8px;
-        font-size: 0.9rem;
-    }
-
-    .leaflet-popup-content h6 {
-        margin: 0 0 6px 0;
-    }
-
-    .leaflet-popup-content p {
-        margin: 0 0 6px 0;
-    }
-
-    .leaflet-popup-content ul {
-        padding-left: 16px;
-        margin: 0;
-        font-size: 0.85rem;
-    }
 </style>
-
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-@endsection
-
-@section('js')
-<!-- Leaflet JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<!-- Leaflet Heat -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-heat/0.2.0/leaflet-heat.min.js"></script></script>
-
-<script>
-    let caratingaMap;
-    let caratingaMarkers = [];
-
-    function colorByCases(totalCases) {
-        if (totalCases >= 20) return '#e74c3c';
-        if (totalCases >= 10) return '#e67e22';
-        if (totalCases >= 5) return '#f1c40f';
-        return '#2ecc71';
-    }
-
-    function getSizeByCases(totalCases) {
-        if (totalCases >= 20) return 25;
-        if (totalCases >= 10) return 20;
-        if (totalCases >= 5) return 15;
-        return 10;
-    }
-
-    function clearCaratingaMarkers() {
-        caratingaMarkers.forEach((marker) => caratingaMap.removeLayer(marker));
-        caratingaMarkers = [];
-    }
-
-    async function loadCaratingaMapData() {
-        try {
-            const response = await fetch("{{ route('map-data.caratinga') }}");
-            if (!response.ok) {
-                throw new Error('Falha ao carregar dados do mapa.');
-            }
-
-            const payload = await response.json();
-            const locations = payload.locations || [];
-
-            clearCaratingaMarkers();
-
-            let bounds = L.latLngBounds();
-
-            for (const item of locations) {
-                try {
-                    // Geocodificação usando Nominatim (gratuito)
-                    const address = `${item.neighborhood}, ${item.city}, ${item.state}, Brasil`;
-                    const geoResponse = await fetch(
-                        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`
-                    );
-
-                    if (!geoResponse.ok) continue;
-
-                    const geoData = await geoResponse.json();
-                    if (!geoData || geoData.length === 0) {
-                        console.warn(`Não foi possível geocodificar: ${address}`);
-                        continue;
-                    }
-
-                    const { lat, lon } = geoData[0];
-                    const diseaseList = (item.disease_breakdown || [])
-                        .slice(0, 5)
-                        .map((disease) => `<li>${disease.disease}: ${disease.cases}</li>`)
-                        .join('');
-
-                    const popupContent = `
-                        <div>
-                            <h6 style="margin:0 0 6px 0"><strong>${item.neighborhood}</strong></h6>
-                            <p style="margin:0 0 6px 0"><strong>Casos:</strong> ${item.total_cases}</p>
-                            <p style="margin:0 0 6px 0"><strong>Principal:</strong> ${item.top_disease}</p>
-                            <ul style="padding-left:16px; margin:0; font-size: 0.85rem;">${diseaseList || '<li>Sem detalhamento</li>'}</ul>
-                        </div>
-                    `;
-
-                    const marker = L.circleMarker([lat, lon], {
-                        radius: getSizeByCases(item.total_cases),
-                        fillColor: colorByCases(item.total_cases),
-                        color: '#1f2d3d',
-                        weight: 2,
-                        opacity: 1,
-                        fillOpacity: 0.85
-                    })
-                    .bindPopup(popupContent)
-                    .addTo(caratingaMap);
-
-                    bounds.extend([lat, lon]);
-                    caratingaMarkers.push(marker);
-                } catch (error) {
-                    console.warn(`Erro ao processar ${item.neighborhood}:`, error);
-                }
-            }
-
-            // Ajusta o mapa para mostrar todos os marcadores
-            if (caratingaMarkers.length > 0) {
-                caratingaMap.fitBounds(bounds, { padding: [50, 50] });
-            }
-        } catch (error) {
-            console.error('Erro ao carregar mapa:', error);
-        }
-    }
-
-    function initCaratingaMap() {
-        // Coordenadas de Caratinga, Minas Gerais
-        caratingaMap = L.map('caratingaMap').setView([-19.78, -42.164], 14);
-
-        // OpenStreetMap tiles (gratuito)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 19
-        }).addTo(caratingaMap);
-
-        loadCaratingaMapData();
-
-        document.getElementById('reloadCaratingaMap').addEventListener('click', async () => {
-            await loadCaratingaMapData();
-        });
-    }
-
-    // Inicializa o mapa quando a página carrega
-    document.addEventListener('DOMContentLoaded', initCaratingaMap);
-</script>
 @endsection

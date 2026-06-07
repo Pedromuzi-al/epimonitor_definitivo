@@ -4,14 +4,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Hash Driver
+    | Driver de Hash Padrão
     |--------------------------------------------------------------------------
     |
-    | This option controls the default hash driver that will be used to hash
-    | passwords for your application. By default, the bcrypt algorithm is
-    | used; however, you remain free to modify this option if you wish.
+    | Esta opção controla o driver de hash padrão que será usado para hash
+    | senhas para sua aplicação. Por padrão, o algoritmo bcrypt é
+    | usado; no entanto, você permanece livre para modificar esta opção se desejar.
     |
-    | Supported: "bcrypt", "argon", "argon2id"
+    | Suportado: "bcrypt", "argon", "argon2id"
     |
     */
 
@@ -19,12 +19,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Bcrypt Options
+    | Opções do Bcrypt
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the configuration options that should be used when
-    | passwords are hashed using the Bcrypt algorithm. This will allow you
-    | to control the amount of time it takes to hash the given password.
+    | Aqui você pode especificar as opções de configuração que devem ser usadas quando
+    | as senhas são hash usando o algoritmo Bcrypt. Isto lhe permitirá
+    | controlar o tempo que leva para fazer o hash da senha fornecida.
     |
     */
 
@@ -34,12 +34,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Argon Options
+    | Opções do Argon
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the configuration options that should be used when
-    | passwords are hashed using the Argon algorithm. These will allow you
-    | to control the amount of time it takes to hash the given password.
+    | Aqui você pode especificar as opções de configuração que devem ser usadas quando
+    | as senhas são hash usando o algoritmo Argon. Estas lhe permitirão
+    | controlar o tempo que leva para fazer o hash da senha fornecida.
     |
     */
 

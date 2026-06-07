@@ -1,9 +1,9 @@
 window._ = require('lodash');
 
 /**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
+ * Carregaremos a biblioteca axios HTTP que nos permite fazer facilmente requisições
+ * ao backend Laravel. Esta biblioteca cuida automaticamente de enviar o token
+ * CSRF como cabeçalho com base no valor do cookie de token "XSRF".
  */
 
 window.axios = require('axios');
@@ -11,9 +11,9 @@ window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
+ * Echo expõe uma API expressiva para se inscrever em canais e ouvir
+ * eventos que são transmitidos pelo Laravel. Echo e transmissão de eventos
+ * permite que sua equipe construa facilmente aplicações web robustas em tempo real.
  */
 
 // import Echo from 'laravel-echo';

@@ -4,12 +4,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Defaults
+    | Padrões de Autenticação
     |--------------------------------------------------------------------------
     |
-    | This option controls the default authentication "guard" and password
-    | reset options for your application. You may change these defaults
-    | as required, but they're a perfect start for most applications.
+    | Esta opção controla o "guard" de autenticação padrão e as opções de
+    | redefinição de senha para sua aplicação. Você pode alterar esses padrões
+    | conforme necessário, mas eles são um ótimo começo para a maioria das aplicações.
     |
     */
 
@@ -20,18 +20,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Guards
+    | Guards de Autenticação
     |--------------------------------------------------------------------------
     |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | here which uses session storage and the Eloquent user provider.
+    | A seguir, você pode definir cada guard de autenticação para sua aplicação.
+    | É claro que uma ótima configuração padrão foi definida para você
+    | aqui, que usa armazenamento de sessão e o provedor de usuário Eloquent.
     |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
+    | Todos os drivers de autenticação tém um provedor de usuário. Isso define como os
+    | usuários são realmente recuperados do seu banco de dados ou outro armazenamento
+    | mecanismos usados por esta aplicação para persistir seus dados de usuário.
     |
-    | Supported: "session"
+    | Suportado: "session"
     |
     */
 
@@ -44,18 +44,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User Providers
+    | Provedores de Usuário
     |--------------------------------------------------------------------------
     |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
+    | Todos os drivers de autenticação tém um provedor de usuário. Isso define como os
+    | usuários são realmente recuperados do seu banco de dados ou outro armazenamento
+    | mecanismos usados por esta aplicação para persistir seus dados de usuário.
     |
-    | If you have multiple user tables or models you may configure multiple
-    | sources which represent each model / table. These sources may then
-    | be assigned to any extra authentication guards you have defined.
+    | Se você tiver várias tabelas ou modelos de usuário, você pode configurar múltiplas
+    | fontes que representam cada modelo / tabela. Essas fontes podem então
+    | ser atribuídas a qualquer guard de autenticação extra que você tenha definido.
     |
-    | Supported: "database", "eloquent"
+    | Suportado: "database", "eloquent"
     |
     */
 
@@ -73,16 +73,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resetting Passwords
+    | Redefinindo Senhas
     |--------------------------------------------------------------------------
     |
-    | You may specify multiple password reset configurations if you have more
-    | than one user table or model in the application and you want to have
-    | separate password reset settings based on the specific user types.
+    | Você pode especificar múltiplas configurações de redefinição de senha se tiver mais
+    | de uma tabela de usuário ou modelo na aplicação e deseje ter
+    | configurações de redefinição de senha separadas com base nos tipos de usuário específicos.
     |
-    | The expire time is the number of minutes that each reset token will be
-    | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
+    | O tempo de expiração é o número de minutos que cada token de redefinição será
+    | considerado válido. Este recurso de segurança mantém os tokens curtos para que
+    | tenham menos tempo para serem adivinhados. Você pode alterar isto conforme necessário.
     |
     */
 
@@ -97,12 +97,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Password Confirmation Timeout
+    | Tempo Limite de Confirmação de Senha
     |--------------------------------------------------------------------------
     |
-    | Here you may define the amount of seconds before a password confirmation
-    | times out and the user is prompted to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
+    | Aqui você pode definir o número de segundos antes de uma confirmação de senha
+    | expirar e o usuário ser solicitado a re-inserir sua senha via
+    | tela de confirmação. Por padrão, o tempo limite dura três horas.
     |
     */
 

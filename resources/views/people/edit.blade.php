@@ -40,7 +40,7 @@
                             @error('zip_code')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
-                            <label for="housing_type" class="form-label">Tipo de Moradia</label>
+                            <label for="housing_type" class="form-label">Tipo de Moradia *</label>
                             <select class="form-select @error('housing_type') is-invalid @enderror" id="housing_type" name="housing_type" required>
                                 <option value="">Selecione...</option>
                                 <option value="casa" {{ old('housing_type', $person->housing_type) === 'casa' ? 'selected' : '' }}>Casa</option>
@@ -49,20 +49,15 @@
                             @error('housing_type')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <label for="street" class="form-label">Logradouro</label>
                             <input type="text" class="form-control @error('street') is-invalid @enderror" id="street" name="street" value="{{ old('street', $person->street) }}" required>
                             @error('street')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <label for="house_number" class="form-label">Numero *</label>
                             <input type="text" class="form-control @error('house_number') is-invalid @enderror" id="house_number" name="house_number" value="{{ old('house_number', $person->house_number) }}" required>
                             @error('house_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="col-md-4">
-                            <label for="address_complement" class="form-label">Complemento</label>
-                            <input type="text" class="form-control @error('address_complement') is-invalid @enderror" id="address_complement" name="address_complement" value="{{ old('address_complement', $person->address_complement) }}">
-                            @error('address_complement')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="col-md-5">

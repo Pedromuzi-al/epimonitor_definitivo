@@ -7,20 +7,12 @@
         <div class="col-12">
             <div class="card border-0">
                 <div class="card-body p-4 p-lg-5">
-                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                    <div>
                         <div>
                             <h1 class="display-6 mb-2">
                                 <i class="fas fa-heartbeat text-danger"></i> Monitoramento de Sintomas
                             </h1>
                             <p class="text-muted mb-0">Acompanhe os sintomas registrados, visualize tendencias e acesse rapidamente os principais fluxos.</p>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <a href="{{ route('people.create') }}" class="btn btn-primary">
-                                <i class="fas fa-user-plus"></i> Nova Pessoa
-                            </a>
-                            <a href="{{ route('diagnoses.create') }}" class="btn btn-success">
-                                <i class="fas fa-stethoscope"></i> Novo Diagnóstico
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -48,7 +40,7 @@
     </div>
 
     <div class="row g-4">
-        <div class="col-lg-8">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-clock"></i> Últimos Diagnósticos</h5>
@@ -94,25 +86,6 @@
                             Nenhum diagnóstico registrado até o momento.
                         </div>
                     @endif
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-compass"></i> Acesso Rápido</h5>
-                </div>
-                <div class="card-body d-grid gap-2">
-                    <a href="{{ route('people.index') }}" class="btn btn-outline-primary text-start">
-                        <i class="fas fa-users"></i> Gerenciar Pessoas
-                    </a>
-                    <a href="{{ route('diagnoses.create') }}" class="btn btn-outline-success text-start">
-                        <i class="fas fa-notes-medical"></i> Realizar Diagnóstico
-                    </a>
-                    <a href="{{ route('statistics.dashboard') }}" class="btn btn-outline-info text-start">
-                        <i class="fas fa-chart-line"></i> Ver Estatísticas
-                    </a>
                 </div>
             </div>
         </div>

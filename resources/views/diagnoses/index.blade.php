@@ -98,6 +98,7 @@
                             <th>Probabilidade</th>
                             <th>Bairro</th>
                             <th>Alerta</th>
+                            <th>Chat</th>
                             <th class="text-end">Ações</th>
                         </tr>
                     </thead>
@@ -140,10 +141,30 @@
                                             <span class="badge badge-low"><i class="fas fa-check"></i> Baixo</span>
                                     @endswitch
                                 </td>
+                                <td>
+                                    @if($diagnosis->conversation)
+                                        <span class="badge {{ $diagnosis->conversation->status === 'open' ? 'bg-info' : 'bg-secondary' }}">
+                                            <i class="fas fa-comments"></i>
+                                            {{ $diagnosis->conversation->status === 'open' ? 'Aberto' : 'Encerrado' }}
+                                        </span>
+                                    @else
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="far fa-comment"></i> Sem chat
+                                        </span>
+                                    @endif
+                                </td>
                                 <td class="text-end">
                                     <a href="{{ route('diagnoses.show', $diagnosis) }}" class="btn btn-sm btn-info" title="Visualizar diagnóstico">
                                         <i class="fas fa-eye"></i> Ver
                                     </a>
+                                    @if(!$diagnosis->conversation)
+                                        <form action="{{ route('diagnoses.conversation.start', $diagnosis) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Iniciar chat">
+                                                <i class="fas fa-comment-medical"></i> Chat
+                                            </button>
+                                        </form>
+                                    @endif
                                     <button 
                                         class="btn btn-sm btn-success"
                                         data-resolve-diagnosis="{{ $diagnosis->id }}"

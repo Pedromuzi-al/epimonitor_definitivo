@@ -88,7 +88,13 @@ class PersonController extends Controller
 
     public function show(Person $person)
     {
-        $person->load(['diagnoses.disease']);
+        $person->load([
+            'diagnoses' => function ($query) {
+                $query->with(['disease', 'conversation.messages.user'])
+                    ->latest();
+            },
+        ]);
+
         return view('people.show', compact('person'));
     }
 

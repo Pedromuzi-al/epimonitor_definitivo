@@ -43,6 +43,11 @@ class Diagnosis extends Model
         return $this->hasMany(SymptomRecord::class);
     }
 
+    public function conversation()
+    {
+        return $this->hasOne(ConversaMedicinal::class);
+    }
+
     /**
      * Marcar diagnóstico como resolvido
      */

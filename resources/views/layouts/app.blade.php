@@ -311,6 +311,11 @@
                     {{-- Apenas para medicos --}}
                     @if(auth()->check() && auth()->user()->user_type === 'doctor')
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('doctor-panel.*') ? 'active' : '' }}" href="{{ route('doctor-panel.index') }}">
+                                <i class="fas fa-user-md"></i> Painel Medico
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('people.*') ? 'active' : '' }}" href="{{ route('people.index') }}">
                                 <i class="fas fa-users"></i> Pessoas
                             </a>

@@ -8,6 +8,8 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorPanelController;
+use App\Http\Controllers\ConversaMedicinalController;
 
 // Rotas de autenticação (públicas)
 Route::get('/login', [AuthController::class, 'showLoginPage'])->name('auth.login');
@@ -54,6 +56,9 @@ Route::get('/dashboard', function () {
 
 // ===== ROTAS EXCLUSIVAS PARA MEDICOS =====
 Route::middleware(['auth', 'is.doctor'])->group(function () {
+    // Painel do medico
+    Route::get('/doctor-panel', [DoctorPanelController::class, 'index'])->name('doctor-panel.index');
+
     // Rotas de pessoas (gerenciar cadastro)
     Route::resource('people', PersonController::class);
 
@@ -64,6 +69,9 @@ Route::middleware(['auth', 'is.doctor'])->group(function () {
     Route::post('/diagnoses/{diagnosis}/resolve', [DiagnosisController::class, 'resolve'])->name('diagnoses.resolve');
     Route::post('/diagnoses/resolve-all', [DiagnosisController::class, 'resolveAll'])->name('diagnoses.resolve-all');
     Route::post('/diagnoses/resolve-by-neighborhood', [DiagnosisController::class, 'resolveByNeighborhood'])->name('diagnoses.resolve-by-neighborhood');
+    Route::post('/diagnoses/{diagnosis}/conversation/start', [ConversaMedicinalController::class, 'start'])->name('diagnoses.conversation.start');
+    Route::post('/diagnoses/{diagnosis}/conversation/messages', [ConversaMedicinalController::class, 'storeMessage'])->name('diagnoses.conversation.messages.store');
+    Route::post('/diagnoses/{diagnosis}/conversation/close', [ConversaMedicinalController::class, 'close'])->name('diagnoses.conversation.close');
 
     // Rotas de estatisticas
     Route::get('/statistics', [StatisticsController::class, 'dashboard'])->name('statistics.dashboard');

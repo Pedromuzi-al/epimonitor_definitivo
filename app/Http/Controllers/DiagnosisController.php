@@ -27,7 +27,7 @@ class DiagnosisController extends Controller
         $bairro = trim((string) $request->input('neighborhood', ''));
         $cpf = preg_replace('/\D/', '', (string) $request->input('cpf', ''));
 
-        $diagnosticos = Diagnosis::with(['person', 'disease'])
+        $diagnosticos = Diagnosis::with(['person', 'disease', 'conversation.latestMessage'])
             ->unresolved()
             ->when($nome !== '', function ($query) use ($nome) {
                 $query->whereHas('person', function ($consultaPessoa) use ($nome) {
@@ -144,7 +144,7 @@ class DiagnosisController extends Controller
      */
     public function show(Diagnosis $diagnosis)
     {
-        $diagnosis->load(['person', 'disease']);
+        $diagnosis->load(['person', 'disease', 'conversation.messages.user', 'conversation.doctor']);
         $possiveisDiagnosticos = $this->servicoDiagnostico
             ->calculateDiagnosis($diagnosis->person, $diagnosis->symptoms ?? []);
 

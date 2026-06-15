@@ -18,11 +18,15 @@ class DiagnosisService
 
         foreach ($doencas as $doenca) {
             $pontuacao = $this->calculateScore($doenca, $symptoms);
-            $diagnosticos[$doenca->id] = [
-                'disease' => $doenca,
-                'score' => $pontuacao,
-                'probability' => $this->calculateProbability($doenca, $pontuacao),
-            ];
+            $probabilidade = $this->calculateProbability($doenca, $pontuacao);
+
+            if ($probabilidade > 0) {
+                $diagnosticos[$doenca->id] = [
+                    'disease' => $doenca,
+                    'score' => $pontuacao,
+                    'probability' => $probabilidade,
+                ];
+            }
         }
 
         // Ordena por probabilidade decrescente.
@@ -42,8 +46,10 @@ class DiagnosisService
         $pontuacaoTotal = 0;
 
         foreach ($symptoms as $symptom) {
-            if (isset($pesos[$symptom])) {
-                $pontuacaoTotal += $pesos[$symptom];
+            $chaveSintoma = $this->normalizeSymptomName($symptom);
+
+            if (isset($pesos[$chaveSintoma])) {
+                $pontuacaoTotal += $pesos[$chaveSintoma];
             }
         }
 
@@ -73,18 +79,66 @@ class DiagnosisService
      */
     private function normalizeWeights($weights): array
     {
+        $pesosNormalizados = [];
+
         if (is_array($weights)) {
-            return $weights;
+            foreach ($weights as $symptom => $weight) {
+                $pesosNormalizados[$this->normalizeSymptomName($symptom)] = is_numeric($weight) ? (float) $weight : 0;
+            }
+
+            return $pesosNormalizados;
         }
 
         if (is_string($weights) && $weights !== '') {
             $decodificado = json_decode($weights, true);
             if (is_array($decodificado)) {
-                return $decodificado;
+                foreach ($decodificado as $symptom => $weight) {
+                    $pesosNormalizados[$this->normalizeSymptomName($symptom)] = is_numeric($weight) ? (float) $weight : 0;
+                }
+
+                return $pesosNormalizados;
             }
         }
 
         return [];
+    }
+
+    /**
+     * Normaliza nomes para comparar sintomas com e sem acentos.
+     */
+    private function normalizeSymptomName(string $symptom): string
+    {
+        $symptom = trim($symptom);
+        $symptom = strtr($symptom, [
+            'Ã¡' => 'a',
+            'Ã ' => 'a',
+            'Ã¢' => 'a',
+            'Ã£' => 'a',
+            'Ã©' => 'e',
+            'Ãª' => 'e',
+            'Ã­' => 'i',
+            'Ã³' => 'o',
+            'Ã´' => 'o',
+            'Ãµ' => 'o',
+            'Ãº' => 'u',
+            'Ã§' => 'c',
+            'á' => 'a',
+            'à' => 'a',
+            'â' => 'a',
+            'ã' => 'a',
+            'é' => 'e',
+            'ê' => 'e',
+            'í' => 'i',
+            'ó' => 'o',
+            'ô' => 'o',
+            'õ' => 'o',
+            'ú' => 'u',
+            'ç' => 'c',
+        ]);
+
+        $symptom = strtolower($symptom);
+
+        return preg_replace('/[^a-z0-9]+/', ' ', $symptom) ?: '';
     }
 
     /**

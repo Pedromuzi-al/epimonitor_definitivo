@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Disease;
+use Illuminate\Database\Seeder;
 
 class DiseaseSeeder extends Seeder
 {
@@ -17,13 +17,13 @@ class DiseaseSeeder extends Seeder
         $diseases = [
             [
                 'name' => 'Gripe',
-                'description' => 'Infecção viral que afeta principalmente as vias respiratórias',
+                'description' => 'Infeccao viral que afeta principalmente as vias respiratorias',
                 'symptom_weights' => [
                     'Febre' => 10,
-                    'Dor de cabeça' => 8,
+                    'Dor de cabeca' => 8,
                     'Dor de barriga' => 2,
                     'Tosse' => 9,
-                    'Vômito' => 3,
+                    'Vomito' => 3,
                     'Diarreia' => 2,
                     'Dor no corpo' => 9,
                     'Dor de garganta' => 7,
@@ -31,17 +31,17 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 9,
                     'Calafrios' => 8,
                     'Perda de olfato' => 5,
-                ]
+                ],
             ],
             [
                 'name' => 'Resfriado',
-                'description' => 'Infecção viral leve das vias respiratórias',
+                'description' => 'Infeccao viral leve das vias respiratorias',
                 'symptom_weights' => [
                     'Febre' => 4,
-                    'Dor de cabeça' => 5,
+                    'Dor de cabeca' => 5,
                     'Dor de barriga' => 1,
                     'Tosse' => 7,
-                    'Vômito' => 1,
+                    'Vomito' => 1,
                     'Diarreia' => 1,
                     'Dor no corpo' => 4,
                     'Dor de garganta' => 8,
@@ -49,17 +49,17 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 6,
                     'Calafrios' => 3,
                     'Perda de olfato' => 6,
-                ]
+                ],
             ],
             [
                 'name' => 'Dengue',
-                'description' => 'Doença viral transmitida por mosquitos',
+                'description' => 'Doenca viral transmitida por mosquitos',
                 'symptom_weights' => [
                     'Febre' => 10,
-                    'Dor de cabeça' => 10,
+                    'Dor de cabeca' => 10,
                     'Dor de barriga' => 6,
                     'Tosse' => 2,
-                    'Vômito' => 7,
+                    'Vomito' => 7,
                     'Diarreia' => 5,
                     'Dor no corpo' => 10,
                     'Dor de garganta' => 3,
@@ -67,17 +67,17 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 9,
                     'Calafrios' => 8,
                     'Perda de olfato' => 1,
-                ]
+                ],
             ],
             [
                 'name' => 'Gastroenterite',
-                'description' => 'Inflamação do estômago e intestinos',
+                'description' => 'Inflamacao do estomago e intestinos',
                 'symptom_weights' => [
                     'Febre' => 6,
-                    'Dor de cabeça' => 4,
+                    'Dor de cabeca' => 4,
                     'Dor de barriga' => 10,
                     'Tosse' => 1,
-                    'Vômito' => 9,
+                    'Vomito' => 9,
                     'Diarreia' => 10,
                     'Dor no corpo' => 5,
                     'Dor de garganta' => 1,
@@ -85,17 +85,17 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 8,
                     'Calafrios' => 5,
                     'Perda de olfato' => 0,
-                ]
+                ],
             ],
             [
                 'name' => 'COVID-19',
-                'description' => 'Doença causada pelo novo coronavírus',
+                'description' => 'Doenca causada pelo novo coronavirus',
                 'symptom_weights' => [
                     'Febre' => 9,
-                    'Dor de cabeça' => 7,
+                    'Dor de cabeca' => 7,
                     'Dor de barriga' => 4,
                     'Tosse' => 10,
-                    'Vômito' => 4,
+                    'Vomito' => 4,
                     'Diarreia' => 5,
                     'Dor no corpo' => 8,
                     'Dor de garganta' => 6,
@@ -103,17 +103,17 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 10,
                     'Calafrios' => 7,
                     'Perda de olfato' => 10,
-                ]
+                ],
             ],
             [
                 'name' => 'Leptospirose',
-                'description' => 'Infecção bacteriana transmitida por roedores',
+                'description' => 'Infeccao bacteriana transmitida por roedores',
                 'symptom_weights' => [
                     'Febre' => 10,
-                    'Dor de cabeça' => 9,
+                    'Dor de cabeca' => 9,
                     'Dor de barriga' => 8,
                     'Tosse' => 3,
-                    'Vômito' => 8,
+                    'Vomito' => 8,
                     'Diarreia' => 7,
                     'Dor no corpo' => 10,
                     'Dor de garganta' => 2,
@@ -121,17 +121,17 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 10,
                     'Calafrios' => 9,
                     'Perda de olfato' => 1,
-                ]
+                ],
             ],
             [
-                'name' => 'Infecção Intestinal',
-                'description' => 'Infecção das vias intestinais',
+                'name' => 'Infeccao Intestinal',
+                'description' => 'Infeccao das vias intestinais',
                 'symptom_weights' => [
                     'Febre' => 7,
-                    'Dor de cabeça' => 3,
+                    'Dor de cabeca' => 3,
                     'Dor de barriga' => 10,
                     'Tosse' => 0,
-                    'Vômito' => 8,
+                    'Vomito' => 8,
                     'Diarreia' => 10,
                     'Dor no corpo' => 4,
                     'Dor de garganta' => 0,
@@ -139,17 +139,17 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 7,
                     'Calafrios' => 4,
                     'Perda de olfato' => 0,
-                ]
+                ],
             ],
             [
-                'name' => 'Intoxicação Alimentar',
+                'name' => 'Intoxicacao Alimentar',
                 'description' => 'Envenenamento causado por alimentos contaminados',
                 'symptom_weights' => [
                     'Febre' => 4,
-                    'Dor de cabeça' => 3,
+                    'Dor de cabeca' => 3,
                     'Dor de barriga' => 10,
                     'Tosse' => 0,
-                    'Vômito' => 10,
+                    'Vomito' => 10,
                     'Diarreia' => 9,
                     'Dor no corpo' => 2,
                     'Dor de garganta' => 0,
@@ -157,16 +157,18 @@ class DiseaseSeeder extends Seeder
                     'Fadiga' => 6,
                     'Calafrios' => 2,
                     'Perda de olfato' => 0,
-                ]
+                ],
             ],
         ];
 
         foreach ($diseases as $disease) {
-            Disease::create([
-                'name' => $disease['name'],
-                'description' => $disease['description'],
-                'symptom_weights' => json_encode($disease['symptom_weights']),
-            ]);
+            Disease::updateOrCreate(
+                ['name' => $disease['name']],
+                [
+                    'description' => $disease['description'],
+                    'symptom_weights' => $disease['symptom_weights'],
+                ]
+            );
         }
     }
 }

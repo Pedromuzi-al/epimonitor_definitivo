@@ -22,6 +22,7 @@ class Person extends Model
         'address_complement',
         'city',
         'state',
+        'user_id',
     ];
 
     public function getCpfAttribute($value): string
@@ -83,5 +84,10 @@ class Person extends Model
     public function diagnoses()
     {
         return $this->hasMany(Diagnosis::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

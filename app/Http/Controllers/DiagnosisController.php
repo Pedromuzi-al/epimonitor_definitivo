@@ -17,7 +17,7 @@ class DiagnosisController extends Controller
     }
 
     /**
-     * Exibe a listagem de diagnosticos.
+     * Exibe a listagem de diagnósticos.
      *
      * @return \Illuminate\Http\Response
      */
@@ -64,7 +64,7 @@ class DiagnosisController extends Controller
     }
 
     /**
-     * Exibe o formulario para criar um novo recurso.
+     * Exibe o formulário para criar um novo recurso.
      *
      * @return \Illuminate\Http\Response
      */
@@ -109,20 +109,20 @@ class DiagnosisController extends Controller
         $pessoa = Person::findOrFail($dadosValidados['person_id']);
         $sintomas = $dadosValidados['symptoms'];
 
-        // Calcula os diagnosticos com base nos sintomas informados.
+        // Calcula os diagnósticos com base nos sintomas informados.
         $diagnosticos = $this->servicoDiagnostico->calculateDiagnosis($pessoa, $sintomas);
 
         if (empty($diagnosticos)) {
-            return redirect()->back()->with('error', 'Nenhuma doenca encontrada.');
+            return redirect()->back()->with('error', 'Nenhuma doença encontrada.');
         }
 
-        // Seleciona a doenca mais provavel.
+        // Seleciona a doença mais provável.
         $maisProvavel = array_shift($diagnosticos);
         $doenca = $maisProvavel['disease'];
         $probabilidade = $maisProvavel['probability'];
         $nivelAlerta = $this->servicoDiagnostico->getAlertLevel($pessoa->neighborhood);
 
-        // Salva o diagnostico no banco.
+        // Salva o diagnóstico no banco.
         $diagnostico = Diagnosis::create([
             'person_id' => $pessoa->id,
             'disease_id' => $doenca->id,
@@ -133,7 +133,7 @@ class DiagnosisController extends Controller
         ]);
 
         return redirect()->route('diagnoses.show', $diagnostico)
-            ->with('success', 'Diagnostico realizado com sucesso!');
+            ->with('success', 'Diagnóstico realizado com sucesso!');
     }
 
     /**
@@ -152,6 +152,8 @@ class DiagnosisController extends Controller
             return ($item['probability'] ?? 0) > 0;
         }));
 
+        $possiveisDiagnosticos = array_slice($possiveisDiagnosticos, 0, 3);
+
         return view('diagnoses.show', [
             'diagnosis' => $diagnosis,
             'possibleDiagnoses' => $possiveisDiagnosticos,
@@ -168,11 +170,11 @@ class DiagnosisController extends Controller
     {
         $diagnosis->delete();
 
-        return redirect()->route('diagnoses.index')->with('success', 'Diagnostico deletado com sucesso!');
+        return redirect()->route('diagnoses.index')->with('success', 'Diagnóstico deletado com sucesso!');
     }
 
     /**
-     * Marca diagnostico como resolvido.
+     * Marca diagnóstico como resolvido.
      *
      * @param  Diagnosis  $diagnosis
      * @param  Request  $request
@@ -187,11 +189,11 @@ class DiagnosisController extends Controller
         $diagnosis->markAsResolved($dadosValidados['resolution_reason'] ?? null);
 
         return redirect()->route('diagnoses.index')
-            ->with('success', 'Diagnostico marcado como resolvido e removido do banco ativo!');
+            ->with('success', 'Diagnóstico marcado como resolvido e removido do banco ativo!');
     }
 
     /**
-     * Marca todos os diagnosticos nao resolvidos como resolvidos.
+     * Marca todos os diagnósticos não resolvidos como resolvidos.
      *
      * @param  Request  $request
      * @return \Illuminate\Http\Response
@@ -207,18 +209,18 @@ class DiagnosisController extends Controller
             ->update([
                 'is_resolved' => true,
                 'resolved_at' => now(),
-                'resolution_reason' => $dadosValidados['resolution_reason'] ?? 'Resolucao global de alertas',
+                'resolution_reason' => $dadosValidados['resolution_reason'] ?? 'Resolução global de alertas',
             ]);
 
         if ($totalAtualizado === 0) {
-            return redirect()->back()->with('error', 'Nenhum diagnostico ativo para resolver.');
+            return redirect()->back()->with('error', 'Nenhum diagnóstico ativo para resolver.');
         }
 
-        return redirect()->back()->with('success', "Todos os diagnosticos ativos foram resolvidos ({$totalAtualizado} registro(s)).");
+        return redirect()->back()->with('success', "Todos os diagnósticos ativos foram resolvidos ({$totalAtualizado} registro(s)).");
     }
 
     /**
-     * Marca diagnosticos nao resolvidos como resolvidos por bairros selecionados.
+     * Marca diagnósticos não resolvidos como resolvidos por bairros selecionados.
      *
      * @param  Request  $request
      * @return \Illuminate\Http\Response
@@ -239,13 +241,14 @@ class DiagnosisController extends Controller
             ->update([
                 'is_resolved' => true,
                 'resolved_at' => now(),
-                'resolution_reason' => $dadosValidados['resolution_reason'] ?? 'Resolucao por bairro selecionado',
+                'resolution_reason' => $dadosValidados['resolution_reason'] ?? 'Resolução por bairro selecionado',
             ]);
 
         if ($totalAtualizado === 0) {
-            return redirect()->back()->with('error', 'Nenhum diagnostico ativo encontrado nos bairros selecionados.');
+            return redirect()->back()->with('error', 'Nenhum diagnóstico ativo encontrado nos bairros selecionados.');
         }
 
-        return redirect()->back()->with('success', "Diagnosticos ativos resolvidos para os bairros selecionados ({$totalAtualizado} registro(s)).");
+        return redirect()->back()->with('success', "Diagnósticos ativos resolvidos para os bairros selecionados ({$totalAtualizado} registro(s)).");
     }
 }
+

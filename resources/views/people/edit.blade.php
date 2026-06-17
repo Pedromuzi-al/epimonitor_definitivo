@@ -29,6 +29,19 @@
                             @error('age')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
+                        <div class="col-md-12">
+                            <label for="user_id" class="form-label">Conta do Paciente</label>
+                            <select class="form-select @error('user_id') is-invalid @enderror" id="user_id" name="user_id">
+                                <option value="">Sem conta vinculada</option>
+                                @foreach($patientUsers as $patientUser)
+                                    <option value="{{ $patientUser->id }}" {{ (string) old('user_id', $person->user_id) === (string) $patientUser->id ? 'selected' : '' }}>
+                                        {{ $patientUser->name }} - {{ $patientUser->email }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('user_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+
                         <div class="col-md-4">
                             <label for="phone" class="form-label">Telefone *</label>
                             <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', $person->phone) }}" required>
@@ -55,7 +68,7 @@
                             @error('street')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
-                            <label for="house_number" class="form-label">Numero *</label>
+                            <label for="house_number" class="form-label">Número *</label>
                             <input type="text" class="form-control @error('house_number') is-invalid @enderror" id="house_number" name="house_number" value="{{ old('house_number', $person->house_number) }}" required>
                             @error('house_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
@@ -84,7 +97,7 @@
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                         <a href="{{ route('people.show', $person) }}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Alteracoes</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Alterações</button>
                     </div>
                 </form>
             </div>
@@ -92,7 +105,6 @@
     </div>
 </div>
 @endsection
-
 @section('js')
 <script>
 function onlyDigits(value){ return value.replace(/\D/g, ''); }

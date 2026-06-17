@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 | Rotas da API
 |--------------------------------------------------------------------------
 |
-| Aqui voce pode registrar as rotas de API da aplicacao. Essas rotas
+| Aqui você pode registrar as rotas de API da aplicacao. Essas rotas
 | sao carregadas pelo RouteServiceProvider dentro de um grupo com o
 | middleware "api".
 |

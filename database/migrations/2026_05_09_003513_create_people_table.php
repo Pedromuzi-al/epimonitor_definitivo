@@ -21,6 +21,10 @@ class CreatePeopleTable extends Migration
             $table->string('phone');
             $table->string('neighborhood');
             $table->timestamps();
+            $table->foreignId('user_id')
+            ->nullable()
+            ->constrained()
+            ->onDelete('cascade');
         });
     }
 

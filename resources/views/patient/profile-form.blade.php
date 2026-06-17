@@ -1,97 +1,84 @@
 @extends('layouts.app')
 
-@section('title', 'Cadastrar Pessoa')
+@section('title', 'Meus Dados')
 
 @section('content')
 <div class="row justify-content-center">
     <div class="col-xl-9 col-lg-10">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="display-6 mb-0"><i class="fas fa-user-plus"></i> Cadastro de Pessoa</h1>
-            <a href="{{ route('people.index') }}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Voltar</a>
+            <h1 class="display-6 mb-0"><i class="fas fa-user-edit"></i> Meus Dados</h1>
+            <a href="{{ route('home') }}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Voltar</a>
         </div>
 
         <div class="card">
-            <div class="card-header"><h5 class="mb-0">Dados Pessoais e Endereço</h5></div>
+            <div class="card-header"><h5 class="mb-0">Dados pessoais e endereço</h5></div>
             <div class="card-body">
-                <form action="{{ route('people.store') }}" method="POST" novalidate>
+                <form action="{{ route('patient.profile.save') }}" method="POST" novalidate>
                     @csrf
 
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Nome Completo *</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', optional($person)->name ?? auth()->user()->name) }}" required>
                             @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-3">
                             <label for="cpf" class="form-label">CPF *</label>
-                            <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf" value="{{ old('cpf') }}" placeholder="000.000.000-00" maxlength="14" required>
+                            <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf" value="{{ old('cpf', optional($person)->cpf) }}" placeholder="000.000.000-00" maxlength="14" required>
                             @error('cpf')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-3">
-                            <label for="age" class="form-label">Idade</label>
-                            <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" value="{{ old('age') }}" min="0" max="150" required>
+                            <label for="age" class="form-label">Idade *</label>
+                            <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" value="{{ old('age', optional($person)->age) }}" min="0" max="150" required>
                             @error('age')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-
-                        <div class="col-md-12">
-                            <label for="user_id" class="form-label">Conta do Paciente</label>
-                            <select class="form-select @error('user_id') is-invalid @enderror" id="user_id" name="user_id">
-                                <option value="">Sem conta vinculada</option>
-                                @foreach($patientUsers as $patientUser)
-                                    <option value="{{ $patientUser->id }}" {{ (string) old('user_id') === (string) $patientUser->id ? 'selected' : '' }}>
-                                        {{ $patientUser->name }} - {{ $patientUser->email }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('user_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="col-md-4">
                             <label for="phone" class="form-label">Telefone *</label>
-                            <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" placeholder="(00) 00000-0000" maxlength="15" required>
+                            <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', optional($person)->phone) }}" placeholder="(00) 00000-0000" maxlength="15" required>
                             @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
                             <label for="zip_code" class="form-label">CEP *</label>
-                            <input type="text" class="form-control @error('zip_code') is-invalid @enderror" id="zip_code" name="zip_code" value="{{ old('zip_code') }}" placeholder="00000-000" maxlength="9" required>
+                            <input type="text" class="form-control @error('zip_code') is-invalid @enderror" id="zip_code" name="zip_code" value="{{ old('zip_code', optional($person)->zip_code) }}" placeholder="00000-000" maxlength="9" required>
                             @error('zip_code')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
                             <label for="housing_type" class="form-label">Tipo de Moradia *</label>
                             <select class="form-select @error('housing_type') is-invalid @enderror" id="housing_type" name="housing_type" required>
                                 <option value="">Selecione...</option>
-                                <option value="casa" {{ old('housing_type') === 'casa' ? 'selected' : '' }}>Casa</option>
-                                <option value="apartamento" {{ old('housing_type') === 'apartamento' ? 'selected' : '' }}>Apartamento</option>
+                                <option value="casa" {{ old('housing_type', optional($person)->housing_type) === 'casa' ? 'selected' : '' }}>Casa</option>
+                                <option value="apartamento" {{ old('housing_type', optional($person)->housing_type) === 'apartamento' ? 'selected' : '' }}>Apartamento</option>
                             </select>
                             @error('housing_type')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="col-md-8">
-                            <label for="street" class="form-label">Logradouro</label>
-                            <input type="text" class="form-control @error('street') is-invalid @enderror" id="street" name="street" value="{{ old('street') }}" required>
+                            <label for="street" class="form-label">Logradouro *</label>
+                            <input type="text" class="form-control @error('street') is-invalid @enderror" id="street" name="street" value="{{ old('street', optional($person)->street) }}" required>
                             @error('street')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
                             <label for="house_number" class="form-label">Número *</label>
-                            <input type="text" class="form-control @error('house_number') is-invalid @enderror" id="house_number" name="house_number" value="{{ old('house_number') }}" required>
+                            <input type="text" class="form-control @error('house_number') is-invalid @enderror" id="house_number" name="house_number" value="{{ old('house_number', optional($person)->house_number) }}" required>
                             @error('house_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="col-md-5">
-                            <label for="city" class="form-label">Cidade</label>
-                            <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('city') }}" required>
+                            <label for="city" class="form-label">Cidade *</label>
+                            <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('city', optional($person)->city) }}" required>
                             @error('city')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-2">
-                            <label for="state" class="form-label">UF</label>
-                            <input type="text" class="form-control @error('state') is-invalid @enderror" id="state" name="state" value="{{ old('state') }}" maxlength="2" required>
+                            <label for="state" class="form-label">UF *</label>
+                            <input type="text" class="form-control @error('state') is-invalid @enderror" id="state" name="state" value="{{ old('state', optional($person)->state) }}" maxlength="2" required>
                             @error('state')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-5">
                             <label for="neighborhood" class="form-label">Bairros (Caratinga) *</label>
                             <select class="form-select @error('neighborhood') is-invalid @enderror @error('neighborhood.*') is-invalid @enderror" id="neighborhood" name="neighborhood[]" multiple size="6" required>
                                 @foreach($neighborhoods as $neighborhood)
-                                    <option value="{{ $neighborhood }}" {{ in_array($neighborhood, old('neighborhood', []), true) ? 'selected' : '' }}>{{ $neighborhood }}</option>
+                                    <option value="{{ $neighborhood }}" {{ in_array($neighborhood, old('neighborhood', $selectedNeighborhoods), true) ? 'selected' : '' }}>{{ $neighborhood }}</option>
                                 @endforeach
                             </select>
                             @error('neighborhood')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
@@ -101,8 +88,8 @@
 
                     <hr class="my-4">
                     <div class="d-flex flex-column flex-md-row gap-2 justify-content-md-end">
-                        <a href="{{ route('people.index') }}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Cadastro</button>
+                        <a href="{{ route('home') }}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Dados</button>
                     </div>
                 </form>
             </div>
@@ -110,6 +97,7 @@
     </div>
 </div>
 @endsection
+
 @section('js')
 <script>
 function onlyDigits(value){ return value.replace(/\D/g, ''); }

@@ -12,8 +12,10 @@ class CreateMedicalConversationMessagesTable extends Migration
             $table->id();
             $table->foreignId('medical_conversation_id')->constrained('medical_conversations')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('sender_type');
+            $table->enum('sender_type', ['doctor', 'patient']);
             $table->text('message');
+            $table->boolean('read')->default(false);
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }

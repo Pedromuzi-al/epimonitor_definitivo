@@ -37,7 +37,7 @@
                             <h5 class="mt-3">{{ $user->name }}</h5>
                             <p class="text-muted mb-2">
                                 @if ($user->user_type === 'doctor')
-                                    <span class="badge bg-primary"><i class="fas fa-stethoscope"></i> Medico</span>
+                                    <span class="badge bg-primary"><i class="fas fa-stethoscope"></i> Médico</span>
                                 @else
                                     <span class="badge bg-success"><i class="fas fa-user-check"></i> Pessoa Normal</span>
                                 @endif
@@ -47,15 +47,15 @@
                         <div class="col-md-9">
                             <div class="profile-info">
                                 <div class="profile-item mb-3">
-                                    <label class="text-muted small">Email</label>
+                                    <label class="text-muted small">E-mail</label>
                                     <p class="mb-0"><i class="fas fa-envelope text-primary"></i> {{ $user->email }}</p>
                                 </div>
 
                                 <div class="profile-item mb-3">
-                                    <label class="text-muted small">Tipo de Usuario</label>
+                                    <label class="text-muted small">Tipo de Usuário</label>
                                     <p class="mb-0">
                                         @if ($user->user_type === 'doctor')
-                                            <i class="fas fa-stethoscope text-primary"></i> Medico - Acesso a recursos avancados
+                                            <i class="fas fa-stethoscope text-primary"></i> Médico - Acesso a recursos avançados
                                         @else
                                             <i class="fas fa-user-check text-success"></i> Pessoa Normal - Registro e acompanhamento de sintomas
                                         @endif
@@ -96,7 +96,7 @@
                     <h5 class="mb-0"><i class="fas fa-shield-alt"></i> Seguranca</h5>
                 </div>
                 <div class="card-body">
-                    <p class="text-muted mb-3">Suas informacoes estao protegidas com criptografia de primeira classe. Voce pode alterar sua senha a qualquer momento na pagina de edicao do perfil.</p>
+                    <p class="text-muted mb-3">Suas informações estao protegidas com criptografia de primeira classe. Você pode alterar sua senha a qualquer momento na página de edição do perfil.</p>
 
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i> <strong>Dica:</strong> Altere sua senha periodicamente para manter sua conta segura.
@@ -128,3 +128,4 @@
         }
     </style>
 @endsection
+

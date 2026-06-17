@@ -16,6 +16,13 @@ class ConversaMedicinalMensagem extends Model
         'user_id',
         'sender_type',
         'message',
+        'read',
+        'read_at',
+    ];
+
+    protected $casts = [
+        'read' => 'boolean',
+        'read_at' => 'datetime',
     ];
 
     public function conversation()

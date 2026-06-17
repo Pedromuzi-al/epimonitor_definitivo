@@ -15,6 +15,7 @@ class Diagnosis extends Model
         'disease_id',
         'probability',
         'symptoms',
+        'patient_notes',
         'neighborhood',
         'alert_level',
         'is_resolved',

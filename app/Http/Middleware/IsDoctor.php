@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class IsDoctor
 {
     /**
-     * Verifica se o usuario autenticado e um medico.
+     * Verifica se o usuário autenticado é um médico.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
@@ -20,6 +20,7 @@ class IsDoctor
             return $next($request);
         }
 
-        return redirect()->route('home')->with('error', 'Voce nao tem permissao para acessar este recurso. Apenas medicos podem acessar.');
+        return redirect()->route('home')->with('error', 'Você não tem permissão para acessar este recurso. Apenas médicos podem acessar.');
     }
 }
+

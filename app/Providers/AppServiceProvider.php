@@ -25,10 +25,15 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('cpf', function ($attribute, $value) {
             $rule = new ValidCPF();
             return $rule->passes($attribute, $value);
-        }, 'CPF invalido.');
+        }, 'CPF inválido.');
 
         // Registrar Alerta medicinal Service no View Composer
         View::composer('*', function ($view) {
+            if (!auth()->check() || auth()->user()->user_type !== 'doctor') {
+                $view->with('medicalAlerts', collect());
+                return;
+            }
+
             $medicalAlertService = app(MedicalAlertService::class);
             $medicalAlerts = $medicalAlertService->getActiveMedicalAlerts();
 

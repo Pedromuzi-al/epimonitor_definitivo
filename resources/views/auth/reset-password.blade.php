@@ -139,7 +139,7 @@
 
                 <div class="form-group">
                     <label for="email" class="form-label">
-                        <i class="fas fa-envelope"></i> Email
+                        <i class="fas fa-envelope"></i> E-mail
                     </label>
                     <input
                         type="email"

@@ -278,7 +278,7 @@
 
                     <div class="form-group">
                         <label for="email" class="form-label">
-                            <i class="fas fa-envelope"></i> Email
+                            <i class="fas fa-envelope"></i> E-mail
                         </label>
                         <input 
                             type="email" 
@@ -345,7 +345,7 @@
             </div>
 
             <div class="login-footer">
-                <p><strong>Dica:</strong> Use seu email e senha para acessar o sistema</p>
+                <p><strong>Dica:</strong> Use seu e-mail e senha para acessar o sistema</p>
             </div>
         </div>
     </div>

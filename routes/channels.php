@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Broadcast;
 | Canais de Broadcast
 |--------------------------------------------------------------------------
 |
-| Aqui voce pode registrar os canais de broadcast suportados pela
+| Aqui você pode registrar os canais de broadcast suportados pela
 | aplicacao. Os callbacks de autorizacao sao usados para verificar
 | se um usuario autenticado pode ouvir o canal.
 |

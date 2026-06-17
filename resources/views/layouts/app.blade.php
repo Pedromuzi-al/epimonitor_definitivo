@@ -308,11 +308,11 @@
                         </a>
                     </li>
                     
-                    {{-- Apenas para medicos --}}
+                    {{-- Apenas para médicos --}}
                     @if(auth()->check() && auth()->user()->user_type === 'doctor')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('doctor-panel.*') ? 'active' : '' }}" href="{{ route('doctor-panel.index') }}">
-                                <i class="fas fa-user-md"></i> Painel Medico
+                                <i class="fas fa-user-md"></i> Painel Médico
                             </a>
                         </li>
                         <li class="nav-item">
@@ -322,19 +322,35 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('diagnoses.*') ? 'active' : '' }}" href="{{ route('diagnoses.index') }}">
-                                <i class="fas fa-stethoscope"></i> Diagnosticos
+                                <i class="fas fa-stethoscope"></i> Diagnósticos
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('statistics.*') ? 'active' : '' }}" href="{{ route('statistics.dashboard') }}">
-                                <i class="fas fa-chart-bar"></i> Estatisticas
+                                <i class="fas fa-chart-bar"></i> Estatísticas
+                            </a>
+                        </li>
+                    @endif
+
+                    {{-- Apenas para pacientes --}}
+                    @if(auth()->check() && auth()->user()->user_type === 'person')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('patient.profile.*') ? 'active' : '' }}" href="{{ route('patient.profile.edit') }}">
+                                <i class="fas fa-user-edit"></i> Meus Dados
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('patient.diagnoses.*') ? 'active' : '' }}" href="{{ route('patient.diagnoses.create') }}">
+                                <i class="fas fa-stethoscope"></i> Meu Diagnóstico
                             </a>
                         </li>
                     @endif
                     
-                    <li class="nav-item dropdown">
-                        @include('components.notification-bell')
-                    </li>
+                    @if(auth()->check() && auth()->user()->user_type === 'doctor')
+                        <li class="nav-item dropdown">
+                            @include('components.notification-bell')
+                        </li>
+                    @endif
                     @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
@@ -410,15 +426,17 @@
         </div>
     </main>
 
-    <!-- Notifications Modal -->
-    @include('components.notification-modal')
+    @if(auth()->check() && auth()->user()->user_type === 'doctor')
+        <!-- Notifications Modal -->
+        @include('components.notification-modal')
+    @endif
 
     <!-- Resolve Diagnosis Modal -->
     @include('components.resolve-diagnosis-modal')
 
     <!-- Footer -->
     <footer>
-        <p>&copy; {{ date('Y') }} EpiMonitor - Sistema de Monitoramento Epidemiologico | Desenvolvido com <i class="fas fa-heart"></i> para a saude publica</p>
+        <p>&copy; {{ date('Y') }} EpiMonitor - Sistema de Monitoramento Epidemiológico | Desenvolvido com <i class="fas fa-heart"></i> para a saúde publica</p>
     </footer>
 
     <!-- Bootstrap JS -->
@@ -429,4 +447,3 @@
     @yield('js')
 </body>
 </html>
-

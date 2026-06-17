@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 | Rotas de Console
 |--------------------------------------------------------------------------
 |
-| Neste arquivo voce pode definir comandos de console baseados em
+| Neste arquivo você pode definir comandos de console baseados em
 | Closure. Cada Closure e associada a uma instancia de comando.
 |
 */

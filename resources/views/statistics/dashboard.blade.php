@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Estatisticas e Alertas')
+@section('title', 'Estatísticas e Alertas')
 
 @section('content')
     <h1 class="display-6 mb-4">
-        <i class="fas fa-chart-bar"></i> Estatisticas e Alertas
+        <i class="fas fa-chart-bar"></i> Estatísticas e Alertas
     </h1>
 
     <div class="row mb-4">
@@ -17,13 +17,13 @@
         <div class="col-md-3 mb-4">
             <div class="stat-card">
                 <h3>{{ $totalDiagnoses }}</h3>
-                <p><i class="fas fa-stethoscope"></i> Diagnosticos Realizados</p>
+                <p><i class="fas fa-stethoscope"></i> Diagnósticos Realizados</p>
             </div>
         </div>
         <div class="col-md-3 mb-4">
             <div class="stat-card">
                 <h3>{{ $diseaseStats->count() }}</h3>
-                <p><i class="fas fa-virus-covid"></i> Doencas Detectadas</p>
+                <p><i class="fas fa-virus-covid"></i> Doenças Detectadas</p>
             </div>
         </div>
         <div class="col-md-3 mb-4">
@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="fas fa-award"></i> Ranking de Doencas
+                        <i class="fas fa-award"></i> Ranking de Doenças
                     </h5>
                 </div>
                 <div class="card-body">
@@ -74,7 +74,7 @@
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-list-ol"></i> Doencas Mais Registradas</h5>
+                    <h5 class="mb-0"><i class="fas fa-list-ol"></i> Doenças Mais Registradas</h5>
                 </div>
                 @if($diseaseStats->count() > 0)
                     <div class="table-responsive">
@@ -82,7 +82,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 50px;">Posicao</th>
-                                    <th>Doenca</th>
+                                    <th>Doença</th>
                                     <th style="width: 80px;">Casos</th>
                                 </tr>
                             </thead>
@@ -98,7 +98,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="card-body text-muted text-center py-4">Nenhuma doenca registrada</div>
+                    <div class="card-body text-muted text-center py-4">Nenhuma doença registrada</div>
                 @endif
             </div>
         </div>
@@ -161,7 +161,7 @@
                 data: {
                     labels: {!! $diseaseStats->pluck('name')->toJson() !!},
                     datasets: [{
-                        label: 'Numero de Casos',
+                        label: 'Número de Casos',
                         data: {!! $diseaseStats->pluck('count')->toJson() !!},
                         backgroundColor: [
                             '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
@@ -204,3 +204,4 @@
         @endif
     </script>
 @endsection
+

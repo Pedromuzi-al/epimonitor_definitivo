@@ -17,7 +17,7 @@ class ValidCPF implements Rule
     }
 
     /**
-     * Determina se a validacao passou.
+     * Determina se a validação passou.
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -25,7 +25,7 @@ class ValidCPF implements Rule
      */
     public function passes($attribute, $value)
     {
-        // Remove caracteres nao numericos.
+        // Remove caracteres não numericos.
         $cpf = preg_replace('/[^0-9]/', '', $value);
 
         // Verifica se possui 11 digitos.
@@ -62,12 +62,13 @@ class ValidCPF implements Rule
     }
 
     /**
-     * Retorna a mensagem de erro da validacao.
+     * Retorna a mensagem de erro da validação.
      *
      * @return string
      */
     public function message()
     {
-        return 'CPF invalido.';
+        return 'CPF inválido.';
     }
 }
+

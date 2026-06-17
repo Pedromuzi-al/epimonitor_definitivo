@@ -33,7 +33,7 @@
         @endforeach
         <li>
             <a class="dropdown-item text-center" href="#" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                <small class="text-primary">Ver todos os alertas →</small>
+                <small class="text-primary">Ver todos os alertas â†’</small>
             </a>
         </li>
     @else
@@ -44,3 +44,4 @@
         </li>
     @endif
 </ul>
+

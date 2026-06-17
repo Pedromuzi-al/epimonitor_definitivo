@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PersonController extends Controller
 {
@@ -45,7 +47,15 @@ class PersonController extends Controller
     public function create()
     {
         $bairros = self::CARATINGA_NEIGHBORHOODS;
-        return view('people.create', ['neighborhoods' => $bairros]);
+        $usuariosPacientes = User::where('user_type', 'person')
+            ->whereDoesntHave('people')
+            ->orderBy('name')
+            ->get();
+
+        return view('people.create', [
+            'neighborhoods' => $bairros,
+            'patientUsers' => $usuariosPacientes,
+        ]);
     }
 
     public function store(Request $request)
@@ -71,6 +81,11 @@ class PersonController extends Controller
             'address_complement' => 'nullable|string|max:255',
             'city' => 'required|string|max:100',
             'state' => 'required|string|size:2',
+            'user_id' => [
+                'nullable',
+                Rule::exists('users', 'id')->where('user_type', 'person'),
+                Rule::unique('people', 'user_id'),
+            ],
         ], [
             'name.required' => 'O nome é obrigatório.',
             'cpf.required' => 'O CPF é obrigatório.',
@@ -81,6 +96,7 @@ class PersonController extends Controller
         ]);
 
         $dadosValidados['neighborhood'] = implode(', ', $dadosValidados['neighborhood']);
+        $dadosValidados['user_id'] = $dadosValidados['user_id'] ?? null;
 
         Person::create($dadosValidados);
         return redirect()->route('people.index')->with('success', 'Pessoa cadastrada com sucesso!');
@@ -102,11 +118,19 @@ class PersonController extends Controller
     {
         $bairros = self::CARATINGA_NEIGHBORHOODS;
         $bairrosSelecionados = array_map('trim', explode(',', (string) $person->neighborhood));
+        $usuariosPacientes = User::where('user_type', 'person')
+            ->where(function ($query) use ($person) {
+                $query->whereDoesntHave('people')
+                    ->orWhere('id', $person->user_id);
+            })
+            ->orderBy('name')
+            ->get();
 
         return view('people.edit', [
             'person' => $person,
             'neighborhoods' => $bairros,
             'selectedNeighborhoods' => $bairrosSelecionados,
+            'patientUsers' => $usuariosPacientes,
         ]);
     }
 
@@ -131,6 +155,11 @@ class PersonController extends Controller
             'address_complement' => 'nullable|string|max:255',
             'city' => 'required|string|max:100',
             'state' => 'required|string|size:2',
+            'user_id' => [
+                'nullable',
+                Rule::exists('users', 'id')->where('user_type', 'person'),
+                Rule::unique('people', 'user_id')->ignore($person->id),
+            ],
         ], [
             'name.required' => 'O nome é obrigatório.',
             'phone.required' => 'O telefone é obrigatório.',
@@ -140,6 +169,7 @@ class PersonController extends Controller
         ]);
 
         $dadosValidados['neighborhood'] = implode(', ', $dadosValidados['neighborhood']);
+        $dadosValidados['user_id'] = $dadosValidados['user_id'] ?? null;
 
         $person->update($dadosValidados);
         return redirect()->route('people.show', $person)->with('success', 'Pessoa atualizada com sucesso!');

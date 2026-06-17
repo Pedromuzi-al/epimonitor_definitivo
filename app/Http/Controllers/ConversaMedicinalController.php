@@ -8,6 +8,25 @@ use Illuminate\Http\Request;
 
 class ConversaMedicinalController extends Controller
 {
+    private function canAccessConversation(ConversaMedicinal $conversa): bool
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->user_type === 'doctor') {
+            return true;
+        }
+
+        return $conversa->diagnosis()
+            ->whereHas('person', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->exists();
+    }
+
     public function start(Diagnosis $diagnosis)
     {
         $conversation = ConversaMedicinal::firstOrCreate(
@@ -27,13 +46,12 @@ class ConversaMedicinalController extends Controller
 
         return redirect()
             ->route('diagnoses.show', $diagnosis)
-            ->with('success', 'Chat iniciado para este diagnostico.');
+            ->with('success', 'Chat iniciado para este diagnóstico.');
     }
 
     public function storeMessage(Request $request, Diagnosis $diagnosis)
     {
         $data = $request->validate([
-            'sender_type' => 'required|in:doctor,patient',
             'message' => 'required|string|max:3000',
         ]);
 
@@ -52,9 +70,11 @@ class ConversaMedicinalController extends Controller
         }
 
         $conversation->messages()->create([
-            'user_id' => $data['sender_type'] === 'doctor' ? auth()->id() : null,
-            'sender_type' => $data['sender_type'],
+            'user_id' => auth()->id(),
+            'sender_type' => 'doctor',
             'message' => $data['message'],
+            'read' => true,
+            'read_at' => now(),
         ]);
 
         return redirect()
@@ -69,7 +89,7 @@ class ConversaMedicinalController extends Controller
         if (!$conversation) {
             return redirect()
                 ->route('diagnoses.show', $diagnosis)
-                ->with('error', 'Este diagnostico ainda nao possui chat.');
+                ->with('error', 'Este diagnóstico ainda não possui chat.');
         }
 
         $conversation->update([
@@ -80,5 +100,44 @@ class ConversaMedicinalController extends Controller
         return redirect()
             ->route('diagnoses.show', $diagnosis)
             ->with('success', 'Chat encerrado.');
+    }
+
+    public function storePatientMessage(Request $request, ConversaMedicinal $conversa)
+    {
+        abort_unless($this->canAccessConversation($conversa), 403);
+        abort_unless(auth()->user()->user_type === 'person', 403);
+
+        if (!$conversa->isOpen()) {
+            return redirect()
+                ->back()
+                ->with('error', 'Este chat está encerrado.');
+        }
+
+        $data = $request->validate([
+            'message' => 'required|string|max:3000',
+        ]);
+
+        $conversa->messages()->create([
+            'user_id' => auth()->id(),
+            'sender_type' => 'patient',
+            'message' => $data['message'],
+            'read' => false,
+            'read_at' => null,
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Mensagem enviada ao médico.');
+    }
+
+    public function refresh(ConversaMedicinal $conversa)
+    {
+        abort_unless($this->canAccessConversation($conversa), 403);
+
+        $conversa->load(['messages.user']);
+
+        return view('conversas.partials.messages', [
+            'conversation' => $conversa,
+        ]);
     }
 }

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Painel Medico')
+@section('title', 'Painel Médico')
 
 @section('content')
     <div class="row mb-4">
         <div class="col">
             <h1 class="display-6">
-                <i class="fas fa-user-md"></i> Painel Medico
+                <i class="fas fa-user-md"></i> Painel Médico
             </h1>
             <p class="text-muted mb-0">Acompanhe casos ativos, conversas abertas e pacientes que precisam de retorno.</p>
         </div>
@@ -15,7 +15,7 @@
                 <i class="fas fa-user-plus"></i> Nova Pessoa
             </a>
             <a href="{{ route('diagnoses.create') }}" class="btn btn-success">
-                <i class="fas fa-stethoscope"></i> Novo Diagnostico
+                <i class="fas fa-stethoscope"></i> Novo Diagnóstico
             </a>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class="col-md-3">
             <div class="stat-card h-100">
                 <h3>{{ $activeDiagnosesCount }}</h3>
-                <p>Diagnosticos Ativos</p>
+                <p>Diagnósticos Ativos</p>
             </div>
         </div>
         <div class="col-md-3">
@@ -36,7 +36,7 @@
         <div class="col-md-3">
             <div class="stat-card h-100">
                 <h3>{{ $waitingDoctorCount }}</h3>
-                <p>Aguardando Medico</p>
+                <p>Aguardando Médico</p>
             </div>
         </div>
         <div class="col-md-3">
@@ -61,7 +61,7 @@
                                 <thead>
                                     <tr>
                                         <th>Paciente</th>
-                                        <th>Doenca</th>
+                                        <th>Doença</th>
                                         <th>Alerta</th>
                                         <th>Chat</th>
                                         <th class="text-end">Acao</th>
@@ -112,15 +112,15 @@
                             <div class="d-flex justify-content-between gap-2">
                                 <div>
                                     <strong>{{ optional($conversation->diagnosis->person)->name ?? 'Paciente' }}</strong>
-                                    <div class="small text-muted">{{ optional($conversation->diagnosis->disease)->name ?? 'Diagnostico' }}</div>
+                                    <div class="small text-muted">{{ optional($conversation->diagnosis->disease)->name ?? 'Diagnóstico' }}</div>
                                 </div>
-                                <a href="{{ route('diagnoses.show', $conversation->diagnosis) }}#chat" class="btn btn-sm btn-outline-primary">
+                                <a href="{{ route('diagnoses.show', $conversation->diagnosis) }}?openChat=1" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-reply"></i> Responder
                                 </a>
                             </div>
                             <div class="small mt-2">
                                 @if($conversation->latestMessage)
-                                    <strong>{{ $conversation->latestMessage->sender_type === 'doctor' ? 'Medico' : 'Paciente' }}:</strong>
+                                    <strong>{{ $conversation->latestMessage->sender_type === 'doctor' ? 'Médico' : 'Paciente' }}:</strong>
                                     {{ \Illuminate\Support\Str::limit($conversation->latestMessage->message, 95) }}
                                 @else
                                     <span class="text-muted">Sem mensagens registradas.</span>

@@ -1,15 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Person;
-use App\Models\Diagnosis;
-use App\Models\Disease;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoctorPanelController;
 use App\Http\Controllers\ConversaMedicinalController;
+use App\Http\Controllers\PatientPortalController;
+use App\Http\Controllers\HomeController;
 
 // Rotas de autenticação (públicas)
 Route::get('/login', [AuthController::class, 'showLoginPage'])->name('auth.login');
@@ -28,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/photo/{user}', [AuthController::class, 'profilePhoto'])->name('user.profile-photo');
     Route::get('/profile/edit', [AuthController::class, 'editProfile'])->name('user.edit-profile');
     Route::put('/profile/update', [AuthController::class, 'updateProfile'])->name('user.update-profile');
+    Route::get('/conversa/{conversa}/refresh', [ConversaMedicinalController::class, 'refresh'])->name('conversa.refresh');
+    Route::post('/conversa/{conversa}/messages', [ConversaMedicinalController::class, 'storePatientMessage'])->name('conversa.messages.store');
 });
 
 // Página de boas-vindas
@@ -36,36 +37,29 @@ Route::get('/', function () {
 })->name('welcome');
 
 // Dashboard (área autenticada - para todos)
-Route::get('/dashboard', function () {
-    $totalPessoas = Person::count();
-    $totalDiagnosticos = Diagnosis::count();
-    $totalDoencas = Disease::count();
-    $ultimosDiagnosticos = Diagnosis::with(['person', 'disease'])
-        ->unresolved()
-        ->latest()
-        ->take(5)
-        ->get();
+Route::get('/dashboard', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
-    return view('home', [
-        'totalPeople' => $totalPessoas,
-        'totalDiagnoses' => $totalDiagnosticos,
-        'totalDiseases' => $totalDoencas,
-        'latestDiagnoses' => $ultimosDiagnosticos,
-    ]);
-})->name('home')->middleware('auth');
+// ===== ROTAS EXCLUSIVAS PARA PACIENTES =====
+Route::middleware(['auth', 'is.person'])->group(function () {
+    Route::get('/meus-dados', [PatientPortalController::class, 'editProfile'])->name('patient.profile.edit');
+    Route::post('/meus-dados', [PatientPortalController::class, 'saveProfile'])->name('patient.profile.save');
+    Route::get('/meu-diagnostico/novo', [PatientPortalController::class, 'createDiagnosis'])->name('patient.diagnoses.create');
+    Route::post('/meu-diagnostico', [PatientPortalController::class, 'storeDiagnosis'])->name('patient.diagnoses.store');
+    Route::get('/meus-diagnosticos/{diagnosis}', [PatientPortalController::class, 'showDiagnosis'])->name('patient.diagnoses.show');
+});
 
 // ===== ROTAS EXCLUSIVAS PARA MEDICOS =====
 Route::middleware(['auth', 'is.doctor'])->group(function () {
-    // Painel do medico
+    // Painel do médico
     Route::get('/doctor-panel', [DoctorPanelController::class, 'index'])->name('doctor-panel.index');
 
     // Rotas de pessoas (gerenciar cadastro)
     Route::resource('people', PersonController::class);
 
-    // Rotas de diagnosticos (criar, listar, visualizar, deletar)
+    // Rotas de diagnósticos (criar, listar, visualizar, deletar)
     Route::resource('diagnoses', DiagnosisController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 
-    // Rotas para resolver diagnosticos
+    // Rotas para resolver diagnósticos
     Route::post('/diagnoses/{diagnosis}/resolve', [DiagnosisController::class, 'resolve'])->name('diagnoses.resolve');
     Route::post('/diagnoses/resolve-all', [DiagnosisController::class, 'resolveAll'])->name('diagnoses.resolve-all');
     Route::post('/diagnoses/resolve-by-neighborhood', [DiagnosisController::class, 'resolveByNeighborhood'])->name('diagnoses.resolve-by-neighborhood');

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Resultado do Diagnostico')
+@section('title', 'Resultado do Diagnóstico')
 
 @section('content')
     <div class="row mb-4">
         <div class="col">
             <h1 class="display-6">
-                <i class="fas fa-stethoscope"></i> Resultado do Diagnostico
+                <i class="fas fa-stethoscope"></i> Resultado do Diagnóstico
             </h1>
         </div>
         <div class="col-auto">
@@ -26,7 +26,7 @@
                             <h5>{{ $diagnosis->person->name }}</h5>
                         </div>
                         <div class="col-md-6">
-                            <p class="text-muted small">Data do Diagnostico:</p>
+                            <p class="text-muted small">Data do Diagnóstico:</p>
                             <h5>{{ $diagnosis->created_at->format('d/m/Y H:i') }}</h5>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
             <div class="card mb-4 border-success">
                 <div class="card-header bg-success text-white">
                     <h5 class="mb-0">
-                        <i class="fas fa-diagnoses"></i> Diagnostico Mais Provavel
+                        <i class="fas fa-diagnoses"></i> Diagnóstico Mais Provavel
                     </h5>
                 </div>
                 <div class="card-body">
@@ -85,10 +85,23 @@
                 </div>
             </div>
 
+            @if($diagnosis->patient_notes)
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-notes-medical"></i> Relato do Paciente
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">{{ $diagnosis->patient_notes }}</p>
+                    </div>
+                </div>
+            @endif
+
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="fas fa-list-ol"></i> Doencas Possiveis para Esta Combinacao
+                        <i class="fas fa-list-ol"></i> Doenças Possíveis para Esta Combinação
                     </h5>
                 </div>
                 <div class="card-body">
@@ -98,12 +111,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Doenca</th>
+                                        <th>Doença</th>
                                         <th>Probabilidade</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($possibleDiagnoses as $index => $item)
+                                    @foreach(array_slice($possibleDiagnoses, 0, 3) as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item['disease']->name }}</td>
@@ -118,7 +131,7 @@
                             </table>
                         </div>
                     @else
-                        <p class="text-muted mb-0">Nao foi possivel estimar doencas para os sintomas informados.</p>
+                        <p class="text-muted mb-0">Não foi possível estimar doenças para os sintomas informados.</p>
                     @endif
                 </div>
             </div>
@@ -168,21 +181,26 @@
                 </div>
             </div>
 
-            <div class="card mb-4" id="chat">
+            <div class="card mb-4 chat-widget" id="chat">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
-                        <i class="fas fa-comments"></i> Chat Medico-Paciente
+                        <i class="fas fa-comments"></i> Chat Médico-Paciente
                     </h5>
-                    @if($diagnosis->conversation)
-                        <span class="badge {{ $diagnosis->conversation->status === 'open' ? 'bg-info' : 'bg-secondary' }}">
-                            {{ $diagnosis->conversation->status === 'open' ? 'Aberto' : 'Encerrado' }}
-                        </span>
-                    @endif
+                    <div class="d-flex align-items-center gap-2">
+                        @if($diagnosis->conversation)
+                            <span class="badge {{ $diagnosis->conversation->status === 'open' ? 'bg-info' : 'bg-secondary' }}">
+                                {{ $diagnosis->conversation->status === 'open' ? 'Aberto' : 'Encerrado' }}
+                            </span>
+                        @endif
+                        <button type="button" class="btn btn-sm btn-light chat-widget-close" id="closeChatWidget" data-close-chat-widget aria-label="Minimizar chat">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="alert alert-warning small">
                         <i class="fas fa-triangle-exclamation"></i>
-                        Este canal registra orientacoes e duvidas do caso. Em sinais graves ou piora importante, oriente atendimento presencial imediato.
+                        Este canal registra orientações e dúvidas do caso. Em sinais graves ou piora importante, oriente atendimento presencial imediato.
                     </div>
 
                     @if(!$diagnosis->conversation)
@@ -193,38 +211,18 @@
                             </button>
                         </form>
                     @else
-                        <div class="chat-thread mb-3">
-                            @forelse($diagnosis->conversation->messages as $message)
-                                <div class="d-flex mb-3 {{ $message->sender_type === 'doctor' ? 'justify-content-end' : 'justify-content-start' }}">
-                                    <div class="chat-bubble {{ $message->sender_type === 'doctor' ? 'chat-doctor' : 'chat-patient' }}">
-                                        <div class="small fw-bold mb-1">
-                                            @if($message->sender_type === 'doctor')
-                                                <i class="fas fa-user-md"></i> Medico
-                                            @else
-                                                <i class="fas fa-user"></i> Paciente
-                                            @endif
-                                        </div>
-                                        <div>{{ $message->message }}</div>
-                                        <div class="small text-muted mt-2">{{ $message->created_at->format('d/m/Y H:i') }}</div>
-                                    </div>
-                                </div>
-                            @empty
-                                <p class="text-muted mb-0">Nenhuma mensagem registrada ainda.</p>
-                            @endforelse
+                        <div
+                            class="chat-thread mb-3"
+                            id="chatMessages"
+                            data-refresh-url="{{ route('conversa.refresh', $diagnosis->conversation) }}">
+                            @include('conversas.partials.messages', ['conversation' => $diagnosis->conversation])
                         </div>
 
                         @if($diagnosis->conversation->status === 'open')
                             <form action="{{ route('diagnoses.conversation.messages.store', $diagnosis) }}" method="POST" class="mb-3">
                                 @csrf
                                 <div class="row g-2">
-                                    <div class="col-md-3">
-                                        <label for="sender_type" class="form-label">Remetente</label>
-                                        <select name="sender_type" id="sender_type" class="form-select" required>
-                                            <option value="doctor">Medico</option>
-                                            <option value="patient">Paciente</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-9">
+                                    <div class="col-12">
                                         <label for="message" class="form-label">Mensagem</label>
                                         <textarea name="message" id="message" rows="3" class="form-control" maxlength="3000" required placeholder="Registre a orientacao ou a duvida do paciente...">{{ old('message') }}</textarea>
                                     </div>
@@ -263,7 +261,7 @@
         <div class="col-lg-4">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-user"></i> Informacoes da Pessoa</h5>
+                    <h5 class="mb-0"><i class="fas fa-user"></i> Informações da Pessoa</h5>
                 </div>
                 <div class="card-body small">
                     <p><strong>Nome:</strong><br>{{ $diagnosis->person->name }}</p>
@@ -276,19 +274,19 @@
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-tasks"></i> Acoes</h5>
+                    <h5 class="mb-0"><i class="fas fa-tasks"></i> Ações</h5>
                 </div>
                 <div class="card-body">
                     <a href="{{ route('people.show', $diagnosis->person) }}" class="btn btn-primary w-100 mb-2">
                         <i class="fas fa-user-circle"></i> Ver Perfil
                     </a>
                     <a href="{{ route('diagnoses.create') }}" class="btn btn-success w-100 mb-2">
-                        <i class="fas fa-plus"></i> Novo Diagnostico
+                        <i class="fas fa-plus"></i> Novo Diagnóstico
                     </a>
                     @if($diagnosis->conversation)
-                        <a href="#chat" class="btn btn-outline-primary w-100">
+                        <button type="button" class="btn btn-outline-primary w-100" data-open-chat-widget>
                             <i class="fas fa-comments"></i> Ir para o Chat
-                        </a>
+                        </button>
                     @else
                         <form action="{{ route('diagnoses.conversation.start', $diagnosis) }}" method="POST">
                             @csrf
@@ -305,20 +303,89 @@
                     <h5 class="mb-0"><i class="fas fa-warning"></i> Aviso Importante</h5>
                 </div>
                 <div class="card-body small">
-                    <p>Este diagnostico e apenas uma simulacao baseada em analise de sintomas.</p>
+                    <p>Este diagnóstico é apenas uma simulação baseada em análise de sintomas.</p>
                     <p class="mb-0">
-                        <strong>Sempre consulte um profissional de saude qualificado para diagnostico e tratamento adequados.</strong>
+                        <strong>Sempre consulte um profissional de saúde qualificado para diagnóstico e tratamento adequados.</strong>
                     </p>
                 </div>
             </div>
         </div>
     </div>
-@endsection
 
+    <button type="button" class="chat-widget-toggle" id="openChatWidget" aria-label="Abrir chat">
+        <i class="fas fa-comments"></i>
+    </button>
+@endsection
 @section('css')
 <style>
+    .chat-widget {
+        position: fixed;
+        right: 1.5rem;
+        bottom: 6.25rem;
+        z-index: 1050;
+        width: min(420px, calc(100vw - 2rem));
+        max-height: calc(100vh - 8rem);
+        margin: 0 !important;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 18px 45px rgba(24, 39, 75, 0.24);
+        transform: translateY(12px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .chat-widget.is-open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .chat-widget .card-header {
+        min-height: 56px;
+    }
+
+    .chat-widget .card-body {
+        max-height: calc(100vh - 13rem);
+        overflow-y: auto;
+    }
+
+    .chat-widget-toggle {
+        position: fixed;
+        right: 1.75rem;
+        bottom: 1.5rem;
+        z-index: 1051;
+        width: 64px;
+        height: 64px;
+        border: 0;
+        border-radius: 50%;
+        color: #ffffff;
+        background: #0d83f3;
+        box-shadow: 0 14px 32px rgba(13, 131, 243, 0.36);
+        font-size: 1.45rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .chat-widget-toggle:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 36px rgba(13, 131, 243, 0.42);
+    }
+
+    .chat-widget-close {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .chat-thread {
-        max-height: 430px;
+        max-height: 250px;
         overflow-y: auto;
         padding-right: 0.25rem;
     }
@@ -341,6 +408,22 @@
     }
 
     @media (max-width: 768px) {
+        .chat-widget {
+            right: 1rem;
+            bottom: 5.75rem;
+            width: calc(100vw - 2rem);
+            max-height: calc(100vh - 7rem);
+        }
+
+        .chat-widget .card-body {
+            max-height: calc(100vh - 12rem);
+        }
+
+        .chat-widget-toggle {
+            right: 1.25rem;
+            bottom: 1.25rem;
+        }
+
         .chat-bubble {
             max-width: 100%;
         }
@@ -359,5 +442,72 @@
             }
         });
     });
+
+    var chatWidget = document.getElementById('chat');
+    var openChatWidget = document.getElementById('openChatWidget');
+    var closeChatWidget = document.getElementById('closeChatWidget');
+
+    function showChatWidget() {
+        if (chatWidget) {
+            chatWidget.classList.add('is-open');
+        }
+    }
+
+    function hideChatWidget() {
+        if (chatWidget) {
+            chatWidget.classList.remove('is-open');
+        }
+    }
+
+    if (openChatWidget) {
+        openChatWidget.addEventListener('click', function () {
+            if (chatWidget && chatWidget.classList.contains('is-open')) {
+                hideChatWidget();
+                return;
+            }
+
+            showChatWidget();
+        });
+    }
+
+    document.addEventListener('click', function (event) {
+        var closeButton = event.target.closest('[data-close-chat-widget], #closeChatWidget');
+        var openButton = event.target.closest('[data-open-chat-widget]');
+
+        if (closeButton) {
+            event.preventDefault();
+            hideChatWidget();
+            return;
+        }
+
+        if (openButton) {
+            event.preventDefault();
+            showChatWidget();
+        }
+    });
+
+    if (new URLSearchParams(window.location.search).get('openChat') === '1') {
+        showChatWidget();
+    }
+
+    var chatMessages = document.getElementById('chatMessages');
+    if (chatMessages && chatMessages.dataset.refreshUrl) {
+        setInterval(function () {
+            fetch(chatMessages.dataset.refreshUrl, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(function (response) {
+                    return response.ok ? response.text() : null;
+                })
+                .then(function (html) {
+                    if (html !== null) {
+                        chatMessages.innerHTML = html;
+                    }
+                })
+                .catch(function () {});
+        }, 10000);
+    }
 </script>
 @endsection

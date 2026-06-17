@@ -146,7 +146,7 @@
         </div>
 
         <div class="password-body">
-            <p>Informe o email cadastrado. Enviaremos um link para voce criar uma nova senha.</p>
+            <p>Informe o e-mail cadastrado. Enviaremos um link para você criar uma nova senha.</p>
 
             @if (session('success'))
                 <div class="alert alert-success">
@@ -164,7 +164,7 @@
                 @csrf
 
                 <label for="email" class="form-label">
-                    <i class="fas fa-envelope"></i> Email
+                    <i class="fas fa-envelope"></i> E-mail
                 </label>
                 <input
                     type="email"
@@ -180,7 +180,7 @@
                 @enderror
 
                 <button type="submit" class="btn-submit">
-                    <i class="fas fa-paper-plane"></i> Enviar link de redefinicao
+                    <i class="fas fa-paper-plane"></i> Enviar link de redefinição
                 </button>
             </form>
 
@@ -193,3 +193,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

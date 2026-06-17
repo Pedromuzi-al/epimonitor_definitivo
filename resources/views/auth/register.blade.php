@@ -275,7 +275,7 @@
 
                     <div class="form-group">
                         <label for="email" class="form-label">
-                            <i class="fas fa-envelope"></i> Email
+                            <i class="fas fa-envelope"></i> E-mail
                         </label>
                         <input 
                             type="email" 
@@ -291,52 +291,9 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label mb-3">
-                            <i class="fas fa-user-tag"></i> Tipo de Usuário
-                        </label>
-                        
-                        <div class="user-type-selector">
-                            <div class="user-type-option">
-                                <input 
-                                    type="radio" 
-                                    id="user_type_person" 
-                                    name="user_type" 
-                                    value="person"
-                                    {{ old('user_type') === 'person' ? 'checked' : '' }}
-                                    required
-                                >
-                                <label for="user_type_person" class="user-type-label">
-                                    <i class="fas fa-user-circle"></i>
-                                    <span>Pessoa Normal</span>
-                                </label>
-                            </div>
-
-                            <div class="user-type-option">
-                                <input 
-                                    type="radio" 
-                                    id="user_type_doctor" 
-                                    name="user_type" 
-                                    value="doctor"
-                                    {{ old('user_type') === 'doctor' ? 'checked' : '' }}
-                                    required
-                                >
-                                <label for="user_type_doctor" class="user-type-label">
-                                    <i class="fas fa-stethoscope"></i>
-                                    <span>Médico</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        @error('user_type')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-
-                        <div class="user-type-info">
-                            <strong><i class="fas fa-info-circle"></i> Qual é a diferença?</strong><br>
-                            <strong>Pessoa Normal:</strong> Registre seus sintomas e receba diagnósticos.<br>
-                            <strong>Médico:</strong> Acesse funcionalidades avançadas de análise.
-                        </div>
+                    <div class="user-type-info">
+                        <strong><i class="fas fa-info-circle"></i> Conta de paciente</strong><br>
+                        Use esta conta para cadastrar seus dados, registrar sintomas, acompanhar diagnósticos e conversar com o médico quando um chat for iniciado.
                     </div>
 
                     <div class="form-group">

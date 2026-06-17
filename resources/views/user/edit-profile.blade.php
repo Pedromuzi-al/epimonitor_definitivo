@@ -12,7 +12,7 @@
                 <div class="card-body">
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <h6 class="alert-heading"><i class="fas fa-exclamation-circle"></i> Erro na validacao!</h6>
+                            <h6 class="alert-heading"><i class="fas fa-exclamation-circle"></i> Erro na validação!</h6>
                             <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -52,7 +52,7 @@
 
                         <div class="mb-4">
                             <label for="email" class="form-label">
-                                <i class="fas fa-envelope"></i> Email
+                                <i class="fas fa-envelope"></i> E-mail
                             </label>
                             <input
                                 type="email"
@@ -70,16 +70,16 @@
 
                         <div class="mb-4">
                             <label for="user_type" class="form-label">
-                                <i class="fas fa-user-tag"></i> Tipo de Usuario
+                                <i class="fas fa-user-tag"></i> Tipo de Usuário
                             </label>
                             <input
                                 type="text"
                                 class="form-control"
                                 id="user_type"
-                                value="{{ $user->user_type === 'doctor' ? 'Medico' : 'Pessoa Normal' }}"
+                                value="{{ $user->user_type === 'doctor' ? 'Médico' : 'Pessoa Normal' }}"
                                 disabled
                             >
-                            <small class="text-muted">O tipo de usuario nao pode ser alterado.</small>
+                            <small class="text-muted">O tipo de usuário não pode ser alterado.</small>
                         </div>
 
                         <div class="mb-4">
@@ -100,7 +100,7 @@
                                 name="profile_photo"
                                 accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                             >
-                            <small class="text-muted d-block mt-2">Formatos aceitos: JPG, PNG ou WEBP (maximo 5MB).</small>
+                            <small class="text-muted d-block mt-2">Formatos aceitos: JPG, PNG ou WEBP (máximo 5MB).</small>
                             @error('profile_photo')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -128,7 +128,7 @@
                                 name="password"
                                 placeholder="Deixe em branco para manter a senha atual"
                             >
-                            <small class="text-muted d-block mt-2">Minimo de 6 caracteres. Deixe em branco se nao deseja alterar.</small>
+                            <small class="text-muted d-block mt-2">Mínimo de 6 caracteres. Deixe em branco se não deseja alterar.</small>
                             @error('password')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -156,7 +156,7 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Salvar Alteracoes
+                                <i class="fas fa-save"></i> Salvar Alterações
                             </button>
                             <a href="{{ route('user.profile') }}" class="btn btn-secondary">
                                 <i class="fas fa-times"></i> Cancelar
@@ -170,8 +170,8 @@
                 <div class="card-body">
                     <h6 class="card-title"><i class="fas fa-lightbulb"></i> Dicas de Seguranca</h6>
                     <ul class="mb-0 small">
-                        <li>Nao compartilhe sua senha com ninguem</li>
-                        <li>Use uma senha unica para esta conta</li>
+                        <li>Não compartilhe sua senha com ninguem</li>
+                        <li>Use uma senha única para esta conta</li>
                         <li>Altere sua senha a cada 3 meses</li>
                         <li>Se suspeitar de atividade incomum, altere sua senha imediatamente</li>
                     </ul>
@@ -180,4 +180,5 @@
         </div>
     </div>
 @endsection
+
 

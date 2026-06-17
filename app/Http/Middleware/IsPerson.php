@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class IsPerson
 {
     /**
-     * Verifica se o usuario autenticado e uma pessoa normal.
+     * Verifica se o usuário autenticado é uma pessoa.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
@@ -20,6 +20,7 @@ class IsPerson
             return $next($request);
         }
 
-        return redirect()->route('home')->with('error', 'Voce nao tem permissao para acessar este recurso. Apenas pessoas normais podem acessar.');
+        return redirect()->route('home')->with('error', 'Você não tem permissão para acessar este recurso. Apenas pessoas podem acessar.');
     }
 }
+

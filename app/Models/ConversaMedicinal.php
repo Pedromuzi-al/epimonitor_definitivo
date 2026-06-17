@@ -46,4 +46,10 @@ class ConversaMedicinal extends Model
     {
         return $this->status === 'open';
     }
+
+    public function unreadMessages()
+    {
+        return $this->messages()
+            ->where('read', false);
+    }
 }

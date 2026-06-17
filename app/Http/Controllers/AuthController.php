@@ -13,32 +13,32 @@ use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
-    // Mostrar pagina introdutoria de login
+    // Mostrar página introdutoria de login
     public function showLoginPage()
     {
         return view('auth.login');
     }
 
-    // Mostrar pagina de registro
+    // Mostrar página de registro
     public function showRegisterPage()
     {
         return view('auth.register');
     }
 
-    // Mostrar orientacao para redefinicao de senha
+    // Mostrar orientacao para redefinição de senha
     public function showForgotPasswordPage()
     {
         return view('auth.forgot-password');
     }
 
-    // Enviar email com link de redefinicao de senha
+    // Enviar e-mail com link de redefinição de senha
     public function sendPasswordResetLink(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
         ], [
-            'email.required' => 'O email e obrigatorio',
-            'email.email' => 'Digite um email valido',
+            'email.required' => 'O e-mail é obrigatório',
+            'email.email' => 'Digite um e-mail válido',
         ]);
 
         try {
@@ -48,23 +48,23 @@ class AuthController extends Controller
 
             return back()
                 ->withInput($request->only('email'))
-                ->withErrors(['email' => 'Nao foi possivel enviar o email agora. Verifique a configuracao de envio do sistema.']);
+                ->withErrors(['email' => 'Não foi possível enviar o e-mail agora. Verifique a configuração de envio do sistema.']);
         }
 
         if ($status === Password::RESET_LINK_SENT) {
             if (config('mail.default') === 'log') {
-                return back()->with('success', 'Link gerado em modo local. Consulte o arquivo storage/logs/laravel.log para copiar o link de redefinicao.');
+                return back()->with('success', 'Link gerado em modo local. Consulte o arquivo storage/logs/laravel.log para copiar o link de redefinição.');
             }
 
-            return back()->with('success', 'Enviamos um link de redefinicao para o email informado.');
+            return back()->with('success', 'Enviamos um link de redefinição para o e-mail informado.');
         }
 
         return back()
             ->withInput($request->only('email'))
-            ->withErrors(['email' => 'Nao encontramos uma conta com esse email.']);
+            ->withErrors(['email' => 'Não encontramos uma conta com esse e-mail.']);
     }
 
-    // Mostrar formulario para cadastrar nova senha
+    // Mostrar formulário para cadastrar nova senha
     public function showResetPasswordPage(Request $request, string $token)
     {
         return view('auth.reset-password', [
@@ -73,7 +73,7 @@ class AuthController extends Controller
         ]);
     }
 
-    // Atualizar senha usando token enviado por email
+    // Atualizar senha usando token enviado por e-mail
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -81,11 +81,11 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|string|min:6|confirmed',
         ], [
-            'email.required' => 'O email e obrigatorio',
-            'email.email' => 'Digite um email valido',
-            'password.required' => 'A nova senha e obrigatoria',
+            'email.required' => 'O e-mail é obrigatório',
+            'email.email' => 'Digite um e-mail válido',
+            'password.required' => 'A nova senha é obrigatória',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres',
-            'password.confirmed' => 'As senhas nao conferem',
+            'password.confirmed' => 'As senhas não conferem',
         ]);
 
         $status = Password::reset(
@@ -101,12 +101,12 @@ class AuthController extends Controller
         );
 
         if ($status === Password::PASSWORD_RESET) {
-            return redirect()->route('auth.login')->with('success', 'Senha redefinida com sucesso. Faca login com a nova senha.');
+            return redirect()->route('auth.login')->with('success', 'Senha redefinida com sucesso. Faça login com a nova senha.');
         }
 
         return back()
             ->withInput($request->only('email'))
-            ->withErrors(['email' => 'O link de redefinicao e invalido ou expirou. Solicite um novo link.']);
+            ->withErrors(['email' => 'O link de redefinição é inválido ou expirou. Solicite um novo link.']);
     }
 
     // Processar login
@@ -116,9 +116,9 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
         ], [
-            'email.required' => 'O email e obrigatorio',
-            'email.email' => 'Digite um email valido',
-            'password.required' => 'A senha e obrigatoria',
+            'email.required' => 'O e-mail é obrigatório',
+            'email.email' => 'Digite um e-mail válido',
+            'password.required' => 'A senha é obrigatória',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres',
         ]);
 
@@ -128,7 +128,7 @@ class AuthController extends Controller
             $usuario = Auth::user();
 
             if ($usuario->user_type === 'doctor') {
-                return redirect()->route('home')->with('success', 'Bem-vindo, Medico!');
+                return redirect()->route('home')->with('success', 'Bem-vindo, Médico!');
             }
 
             return redirect()->route('home')->with('success', 'Bem-vindo!');
@@ -136,7 +136,7 @@ class AuthController extends Controller
 
         return back()
             ->withInput($request->only('email'))
-            ->withErrors(['email' => 'Email ou senha invalidos']);
+            ->withErrors(['email' => 'E-mail ou senha inválidos']);
     }
 
     // Processar registro
@@ -146,18 +146,15 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'user_type' => 'required|in:doctor,person',
         ], [
-            'name.required' => 'O nome e obrigatorio',
-            'name.max' => 'O nome nao pode exceder 255 caracteres',
-            'email.required' => 'O email e obrigatorio',
-            'email.email' => 'Digite um email valido',
-            'email.unique' => 'Este email ja esta registrado',
-            'password.required' => 'A senha e obrigatoria',
+            'name.required' => 'O nome é obrigatório',
+            'name.max' => 'O nome não pode exceder 255 caracteres',
+            'email.required' => 'O e-mail é obrigatório',
+            'email.email' => 'Digite um e-mail válido',
+            'email.unique' => 'Este e-mail já está registrado',
+            'password.required' => 'A senha é obrigatória',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres',
-            'password.confirmed' => 'As senhas nao conferem',
-            'user_type.required' => 'Selecione o tipo de usuario',
-            'user_type.in' => 'Tipo de usuario invalido',
+            'password.confirmed' => 'As senhas não conferem',
         ]);
 
         try {
@@ -165,37 +162,33 @@ class AuthController extends Controller
                 'name' => $dadosValidados['name'],
                 'email' => $dadosValidados['email'],
                 'password' => Hash::make($dadosValidados['password']),
-                'user_type' => $dadosValidados['user_type'],
+                'user_type' => 'person',
             ]);
 
             Auth::login($usuario);
             $request->session()->regenerate();
 
-            $mensagem = $dadosValidados['user_type'] === 'doctor'
-                ? 'Bem-vindo, Medico! Sua conta foi criada com sucesso.'
-                : 'Bem-vindo! Sua conta foi criada com sucesso.';
-
-            return redirect()->route('home')->with('success', $mensagem);
+            return redirect()->route('home')->with('success', 'Bem-vindo! Sua conta foi criada com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Erro ao criar conta. Tente novamente.');
         }
     }
 
-    // Mostrar perfil do usuario
+    // Mostrar perfil do usuário
     public function showProfile()
     {
         $usuario = Auth::user();
         return view('user.profile', ['user' => $usuario]);
     }
 
-    // Mostrar formulario de edicao de perfil
+    // Mostrar formulário de edição de perfil
     public function editProfile()
     {
         $usuario = Auth::user();
         return view('user.edit-profile', ['user' => $usuario]);
     }
 
-    // Exibir foto de perfil salva no disco publico
+    // Exibir foto de perfil salva no disco público
     public function profilePhoto(User $user)
     {
         if (empty($user->profile_photo_path) || !Storage::disk('public')->exists($user->profile_photo_path)) {
@@ -205,13 +198,13 @@ class AuthController extends Controller
         return response()->file($this->caminhoFotoPerfil($user));
     }
 
-    // Atualizar perfil do usuario
+    // Atualizar perfil do usuário
     public function updateProfile(Request $request)
     {
         /** @var User|null $usuario */
         $usuario = Auth::user();
         if (!$usuario) {
-            return redirect()->route('login')->with('error', 'Sua sessao expirou. Faca login novamente.');
+            return redirect()->route('auth.login')->with('error', 'Sua sessão expirou. Faça login novamente.');
         }
 
         $dadosValidados = $request->validate([
@@ -221,16 +214,16 @@ class AuthController extends Controller
             'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'remove_profile_photo' => 'nullable|boolean',
         ], [
-            'name.required' => 'O nome e obrigatorio',
-            'name.max' => 'O nome nao pode exceder 255 caracteres',
-            'email.required' => 'O email e obrigatorio',
-            'email.email' => 'Digite um email valido',
-            'email.unique' => 'Este email ja esta registrado',
+            'name.required' => 'O nome é obrigatório',
+            'name.max' => 'O nome não pode exceder 255 caracteres',
+            'email.required' => 'O e-mail é obrigatório',
+            'email.email' => 'Digite um e-mail válido',
+            'email.unique' => 'Este e-mail já está registrado',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres',
-            'password.confirmed' => 'As senhas nao conferem',
-            'profile_photo.image' => 'A foto de perfil deve ser uma imagem valida.',
+            'password.confirmed' => 'As senhas não conferem',
+            'profile_photo.image' => 'A foto de perfil deve ser uma imagem válida.',
             'profile_photo.mimes' => 'A foto deve estar em JPG, PNG ou WEBP.',
-            'profile_photo.max' => 'A foto de perfil deve ter no maximo 5MB.',
+            'profile_photo.max' => 'A foto de perfil deve ter no máximo 5MB.',
         ]);
 
         try {
@@ -292,4 +285,3 @@ class AuthController extends Controller
         return redirect('/')->with('success', 'Desconectado com sucesso');
     }
 }
-
